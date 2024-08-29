@@ -11,7 +11,8 @@ import ModalRegistrarMujeresEmbarazadas from './ModalRegistrarMujeresEmbarazadas
 import AppMenu from '@aqtiva/components/AppMenu';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { GrMapLocation } from 'react-icons/gr';
-import ModalRegistrarVisita from './ModalRegistrarVisita';
+import ModalRegistrarCitaPrenatal from './ModalRegistrarCitaPrenatal';
+import { IoEyeOutline } from 'react-icons/io5';
 
 const Registro = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,15 @@ const Registro = () => {
               },
             },
             {
-              label: 'Registrar visita',
+              label: 'Ver visitas prenatales',
+              icon: <IoEyeOutline />,
+              onClick: () => {
+                setRegistro(item);
+                setModalVisita(true);
+              },
+            },
+            {
+              label: 'Registrar visita prenatal',
               icon: <GrMapLocation />,
               onClick: () => {
                 setRegistro(item);
@@ -136,7 +145,7 @@ const Registro = () => {
         }}
         registro={registro}
       />
-      <ModalRegistrarVisita
+      <ModalRegistrarCitaPrenatal
         embarazada={registro}
         onOk={async () => {
           await get(search);

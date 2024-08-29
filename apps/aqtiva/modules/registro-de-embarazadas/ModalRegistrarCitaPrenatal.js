@@ -5,26 +5,21 @@ import { api } from '@aqtiva/helpers/api';
 const dateFormat = 'DD/MM/YYYY';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 
-const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
+const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
   const { loading } = useSelector(({ common }) => common);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const [empleados, setEmpleados] = useState([]);
-  const { create, genericGet } = api('citas-embarazadas', dispatch);
-
-  useEffect(() => {
-    genericGet('empleados', {}, setEmpleados);
-  }, []);
+  const { create, genericPost } = api('citas-embarazadas', dispatch);
 
   return (
     <Modal
-      title={`Registro de cita de: ${embarazada.nombres}`}
+      title={`Registro de cita de: ${embarazada?.nombres}`}
       open={open}
       onCancel={onCancel}
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await create({ ...values, embarazada_id: embarazada.id });
+          await genericPost(`citas-prenatales/${embarazada?.id}`, values);
           onOk();
         } catch (e) {
           console.log(e);
@@ -55,7 +50,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'meses'}
               label={'Meses'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -64,7 +59,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'peso'}
               label={'Peso'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -73,7 +68,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'presion_arterial'}
               label={'Presion arterial'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -82,7 +77,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'altura_uterina'}
               label={'Altura uterina'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -93,7 +88,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'foco_fetal'}
               label={'Foco fetal'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -102,7 +97,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'acido_folico_sulfato_ferroso'}
               label={'Acido Folico / Sulfato ferroso'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -111,7 +106,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'laboratorios'}
               label={'Laboratorios'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -120,7 +115,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'tdap'}
               label={'TDAP'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -131,7 +126,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'influenza'}
               label={'Influenza'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -140,7 +135,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'covid'}
               label={'COVID'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -149,7 +144,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
               name={'medicamentos'}
               label={'Medicamentos'}
             >
-              <Input />
+              <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -167,4 +162,4 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel, embarazada }) => {
   );
 };
 
-export default ModalRegistrarVisita;
+export default ModalRegistrarCitaPrenatal;
