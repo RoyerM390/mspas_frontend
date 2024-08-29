@@ -13,13 +13,15 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { GrMapLocation } from 'react-icons/gr';
 import ModalRegistrarCitaPrenatal from './ModalRegistrarCitaPrenatal';
 import { IoEyeOutline } from 'react-icons/io5';
+import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
 
 const Registro = () => {
   const dispatch = useDispatch();
   const [mujeresEmbarazadas, setMujeresEmbarazadas] = useState([]);
   const [search, setSearch] = useState('');
   const [registro, setRegistro] = useState(null);
-  const [modalVisita, setModalVisita] = useState(false);
+  const [modalRegistrarCita, setModalRegistrarCita] = useState(false);
+  const [modalVerVisitas, setModalVerVisitas] = useState(false);
   const { get } = api(
     'embarazadas',
     dispatch,
@@ -87,7 +89,7 @@ const Registro = () => {
               icon: <IoEyeOutline />,
               onClick: () => {
                 setRegistro(item);
-                setModalVisita(true);
+                setModalVerVisitas(true);
               },
             },
             {
@@ -95,7 +97,7 @@ const Registro = () => {
               icon: <GrMapLocation />,
               onClick: () => {
                 setRegistro(item);
-                setModalVisita(true);
+                setModalRegistrarCita(true);
               },
             },
           ]}
@@ -149,10 +151,20 @@ const Registro = () => {
         embarazada={registro}
         onOk={async () => {
           await get(search);
-          setModalVisita(false);
+          setModalRegistrarCita(false);
         }}
-        open={modalVisita}
-        onCancel={() => setModalVisita(false)}
+        open={modalRegistrarCita}
+        onCancel={() => setModalRegistrarCita(false)}
+      />
+
+      <ModalVerCitasPrenatales
+        embarazada={registro}
+        onOk={async () => {
+          await get(search);
+          setModalVerVisitas(false);
+        }}
+        open={modalVerVisitas}
+        onCancel={() => setModalVerVisitas(false)}
       />
     </AppsContainer>
   );
