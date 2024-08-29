@@ -1,0 +1,433 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@aqtiva/api-helpers": ["libs/api-helpers/src/index.js"],
+      "@aqtiva/axios": ["libs/services/axios/src/index.js"],
+      "@aqtiva/components": ["libs/components/src/index.js"],
+      "@aqtiva/components/AppAnimate": [
+        "libs/components/src/lib/AppAnimate/index.js"
+      ],
+      "@aqtiva/components/AppAnimateGroup": [
+        "libs/components/src/lib/AppAnimateGroup/index.js"
+      ],
+      "@aqtiva/components/AppAsyncComponent": [
+        "libs/components/src/lib/AppAsyncComponent/index.js"
+      ],
+      "@aqtiva/components/AppAutoComplete": [
+        "libs/components/src/lib/AppFormComponents/AppAutoComplete/index.js"
+      ],
+      "@aqtiva/components/AppAutocompleteField": [
+        "libs/components/src/lib/AppFormComponents/AppAutocompleteField.js"
+      ],
+      "@aqtiva/components/AppBadge": [
+        "libs/components/src/lib/AppBadge/index.js"
+      ],
+      "@aqtiva/components/AppCard": [
+        "libs/components/src/lib/AppCard/index.js"
+      ],
+      "@aqtiva/components/AppCircularProgress": [
+        "libs/components/src/lib/AppCircularProgress/index.js"
+      ],
+      "@aqtiva/components/AppComponentCard": [
+        "libs/components/src/lib/AppComponentCard/index.js"
+      ],
+      "@aqtiva/components/AppComponentHeader": [
+        "libs/components/src/lib/AppComponentHeader/index.js"
+      ],
+      "@aqtiva/components/AppConfirmationModal": [
+        "libs/components/src/lib/AppConfirmationModal/index.js"
+      ],
+      "@aqtiva/components/AppContentView": [
+        "libs/components/src/lib/AppContentView/index.js"
+      ],
+      "@aqtiva/components/AppCurrency": [
+        "libs/components/src/lib/AppCurrency/index.js"
+      ],
+      "@aqtiva/components/AppDateFiled": [
+        "libs/components/src/lib/AppFormComponents/AppDateFiled.js"
+      ],
+      "@aqtiva/components/AppDialog": [
+        "libs/components/src/lib/AppDialog/index.js"
+      ],
+      "@aqtiva/components/AppEmptyResult": [
+        "libs/components/src/lib/AppEmptyResult/index.js"
+      ],
+      "@aqtiva/components/AppErrorBoundary": [
+        "libs/components/src/lib/AppErrorBoundary/index.js"
+      ],
+      "@aqtiva/components/AppFooter": [
+        "libs/components/src/lib/AppLayout/components/AppFooter.js"
+      ],
+      "@aqtiva/components/AppGrid": [
+        "libs/components/src/lib/AppGrid/index.js"
+      ],
+      "@aqtiva/components/AppIconButton": [
+        "libs/components/src/lib/AppIconButton/index.js"
+      ],
+      "@aqtiva/components/AppImage": [
+        "libs/components/src/lib/AppImage/index.js"
+      ],
+      "@aqtiva/components/AppInfoView": [
+        "libs/components/src/lib/AppInfoView/index.js"
+      ],
+      "@aqtiva/components/AppLayout": [
+        "libs/components/src/lib/AppLayout/index.js"
+      ],
+      "@aqtiva/components/AppLinearProgress": [
+        "libs/components/src/lib/AppLinearProgress/index.js"
+      ],
+      "@aqtiva/components/AppList": [
+        "libs/components/src/lib/AppList/index.js"
+      ],
+      "@aqtiva/components/AppList/ListEmptyResult": [
+        "libs/components/src/lib/AppList/ListEmptyResult.js"
+      ],
+      "@aqtiva/components/AppList/ListFooter": [
+        "libs/components/src/lib/AppList/ListFooter.js"
+      ],
+      "@aqtiva/components/AppLngSwitcher": [
+        "libs/components/src/lib/AppLngSwitcher/index.js"
+      ],
+      "@aqtiva/components/AppLoader": [
+        "libs/components/src/lib/AppLoader/index.js"
+      ],
+      "@aqtiva/components/AppLogo": [
+        "libs/components/src/lib/AppLayout/components/AppLogo/index.js"
+      ],
+      "@aqtiva/components/AppMedialViewer": [
+        "libs/components/src/lib/AppMedialViewer/index.js"
+      ],
+      "@aqtiva/components/AppMenu": [
+        "libs/components/src/lib/AppMenu/index.js"
+      ],
+      "@aqtiva/components/AppMessageView": [
+        "libs/components/src/lib/AppMessageView/index.js"
+      ],
+      "@aqtiva/components/AppNavLink": [
+        "libs/components/src/lib/AppNavLink/index.js"
+      ],
+      "@aqtiva/components/AppNotifications": [
+        "libs/components/src/lib/AppNotifications/index.js"
+      ],
+      "@aqtiva/components/AppNotifications/NotificationItem": [
+        "libs/components/src/lib/AppNotifications/NotificationItem.js"
+      ],
+      "@aqtiva/components/AppPageMeta": [
+        "libs/components/src/lib/AppPageMeta/index.js"
+      ],
+      "@aqtiva/components/AppRowContainer": [
+        "libs/components/src/lib/AppRowContainer/index.js"
+      ],
+      "@aqtiva/components/AppMap": [
+        "libs/components/src/lib/AppMap/index.js"
+      ],
+      "@aqtiva/components/AppRowSimpleContainer": [
+        "libs/components/src/lib/AppRowContainer/AppRowSimpleContainer.js"
+      ],
+      "@aqtiva/components/AppScrollbar": [
+        "libs/components/src/lib/AppScrollbar/index.js"
+      ],
+      "@aqtiva/components/AppSearchBar": [
+        "libs/components/src/lib/AppSearchBar/index.js"
+      ],
+      "@aqtiva/components/AppSelect": [
+        "libs/components/src/lib/AppSelect/index.js"
+      ],
+      "@aqtiva/components/AppSelectField": [
+        "libs/components/src/lib/AppFormComponents/AppSelectField.js"
+      ],
+      "@aqtiva/components/AppSelectedIcon": [
+        "libs/components/src/lib/AppSelectedIcon/index.js"
+      ],
+      "@aqtiva/components/AppSemiCircleProgress": [
+        "libs/components/src/lib/AppSemiCircleProgress/index.js"
+      ],
+      "@aqtiva/components/AppSuspense": [
+        "libs/components/src/lib/AppSuspense/index.js"
+      ],
+      "@aqtiva/components/AppTableContainer": [
+        "libs/components/src/lib/AppTableContainer/index.js"
+      ],
+      "@aqtiva/components/AppTextField": [
+        "libs/components/src/lib/AppFormComponents/AppTextField.js"
+      ],
+      "@aqtiva/components/AppThemeSetting": [
+        "libs/components/src/lib/AppThemeSetting/index.js"
+      ],
+      "@aqtiva/components/AppTooltip": [
+        "libs/components/src/lib/AppTooltip/index.js"
+      ],
+      "@aqtiva/components/AppsContainer": [
+        "libs/components/src/lib/AppsContainer/index.js"
+      ],
+      "@aqtiva/components/AppsContent": [
+        "libs/components/src/lib/AppsContainer/AppsContent.js"
+      ],
+      "@aqtiva/components/AppsDeleteIcon": [
+        "libs/components/src/lib/AppsDeleteIcon/index.js"
+      ],
+      "@aqtiva/components/AppsFooter": [
+        "libs/components/src/lib/AppsContainer/AppsFooter.js"
+      ],
+      "@aqtiva/components/AppsHeader": [
+        "libs/components/src/lib/AppsContainer/AppsHeader.js"
+      ],
+      "@aqtiva/components/AppsPagination": [
+        "libs/components/src/lib/AppsPagination/index.js"
+      ],
+      "@aqtiva/components/AppsSideBarFolderItem": [
+        "libs/components/src/lib/AppsSideBarFolderItem/index.js"
+      ],
+      "@aqtiva/components/AppsStarredIcon": [
+        "libs/components/src/lib/AppsStarredIcon/index.js"
+      ],
+      "@aqtiva/components/AuthRoutes": [
+        "libs/components/src/lib/AuthRoutes.js"
+      ],
+      "@aqtiva/components/ChartTooltip": [
+        "libs/components/src/lib/ChartTooltip/index.js"
+      ],
+      "@aqtiva/components/ChatListSkeleton": [
+        "libs/components/src/lib/AppSkeleton/ChatListSkeleton.js"
+      ],
+      "@aqtiva/components/ContactListSkeleton": [
+        "libs/components/src/lib/AppSkeleton/ContactListSkeleton.js"
+      ],
+      "@aqtiva/components/EmailListSkeleton": [
+        "libs/components/src/lib/AppSkeleton/EmailListSkeleton.js"
+      ],
+      "@aqtiva/components/FeedPlaceholder": [
+        "libs/components/src/lib/AppSkeleton/FeedPlaceholder.js"
+      ],
+      "@aqtiva/components/Icons": [
+        "libs/components/src/lib/AppLayout/components/AppVerticalNav/icons.js"
+      ],
+      "@aqtiva/components/MailDetailSkeleton": [
+        "libs/components/src/lib/AppSkeleton/MailDetailSkeleton.js"
+      ],
+      "@aqtiva/components/SidebarListSkeleton": [
+        "libs/components/src/lib/AppSkeleton/SidebarListSkeleton.js"
+      ],
+      "@aqtiva/components/TableHeader": [
+        "libs/components/src/lib/AppTable/TableHeader.js"
+      ],
+      "@aqtiva/components/TablePlaceholder": [
+        "libs/components/src/lib/AppSkeleton/TableSkeleton.js"
+      ],
+      "@aqtiva/components/TodoListSkeleton": [
+        "libs/components/src/lib/AppSkeleton/TodoListSkeleton.js"
+      ],
+      "@aqtiva/constants": ["libs/constants/src/index.js"],
+      "@aqtiva/constants/ActionTypes": ["libs/constants/src/ActionTypes.js"],
+      "@aqtiva/constants/AppConst": ["libs/constants/src/AppConst.js"],
+      "@aqtiva/constants/AppEnums": ["libs/constants/src/AppEnums.js"],
+      "@aqtiva/constants/ColorSets": ["libs/constants/src/ColorSets.js"],
+      "@aqtiva/constants/api": ["libs/constants/src/api.js"],
+      "@aqtiva/constants/defaultConfig": [
+        "libs/constants/src/defaultConfig.js"
+      ],
+      "@aqtiva/context": ["libs/context/src/index.js"],
+      "@aqtiva/context/AppContextProvider": [
+        "libs/context/src/AppContextProvider/index.js"
+      ],
+      "@aqtiva/context/AppLocaleProvider": [
+        "libs/context/src/AppLocaleProvider/index.js"
+      ],
+      "@aqtiva/context/AppStyleProvider": [
+        "libs/context/src/AppStyleProvider/index.js"
+      ],
+      "@aqtiva/context/AppThemeProvider": [
+        "libs/context/src/AppThemeProvider/index.js"
+      ],
+      "@aqtiva/context/InfoViewContextProvider": [
+        "libs/context/src/AppContextProvider/InfoViewContextProvider.js"
+      ],
+      "@aqtiva/context/LayoutContextProvider": [
+        "libs/context/src/AppContextProvider/LayoutContextProvider.js"
+      ],
+      "@aqtiva/context/LocaleContextProvider": [
+        "libs/context/src/AppContextProvider/LocaleContextProvider.js"
+      ],
+      "@aqtiva/context/SidebarContextProvider": [
+        "libs/context/src/AppContextProvider/SidebarContextProvider.js"
+      ],
+      "@aqtiva/context/ThemeContextProvider": [
+        "libs/context/src/AppContextProvider/ThemeContextProvider.js"
+      ],
+      "@aqtiva/context/server": ["libs/context/src/server.js"],
+      "@aqtiva/fakedb/navigationStyle": ["libs/mockapi/src/index.js"],
+      "@aqtiva/helpers": ["libs/helpers/src/lib/index.js"],
+      "@aqtiva/helpers/IntlMessages": ["libs/helpers/src/lib/IntlMessages.js"],
+      "@aqtiva/helpers/api": ["libs/helpers/src/lib/apiHelpers/index.js"],
+      "@aqtiva/hooks": ["libs/hooks/src/index.js"],
+      "@aqtiva/hooks/modal": ["libs/hooks/src/useModal.js"],
+      "@aqtiva/hooks/mediosDeRecepcion": ["libs/hooks/src/useMediosDeRecepcion.js"],
+      "@aqtiva/hooks/useCuentasBanco": ["libs/hooks/src/useCuentasBanco.js"],
+      "@aqtiva/hooks/cajaAbierta": ["libs/hooks/src/useCajaAbierta.js"],
+      "@aqtiva/hooks/APIHooks": ["libs/hooks/src/APIHooks.js"],
+      "@aqtiva/hooks/AuthHooks": ["libs/hooks/src/AuthHooks.js"],
+      "@aqtiva/modules": ["libs/modules/src/index.js"],
+      "@aqtiva/modules/clientes": ["libs/modules/src/lib/clientes/index.js"],
+      "@aqtiva/modules/UserProfile": ["libs/modules/src/lib/profile/UserProfile"],
+      "@aqtiva/modules/garantias": ["libs/modules/src/lib/garantias/index.js"],
+      "@aqtiva/modules/modal-prestamos": ["libs/modules/src/lib/prestamos/ModalCobrarPago.js"],
+      "@aqtiva/modules/fotos": ["libs/modules/src/lib/fotos/index.js"],
+      "@aqtiva/modules/auth/ForgetPassword": [
+        "libs/modules/src/lib/auth/ForgotPassword/index.js"
+      ],
+      "@aqtiva/modules/auth/SignIn": [
+        "libs/modules/src/lib/auth/Signin/index.js"
+      ],
+      "@aqtiva/modules/auth/SignUp": [
+        "libs/modules/src/lib/auth/Signup/index.js"
+      ],
+      "@aqtiva/modules/components/dataDisplay": [
+        "libs/modules/src/lib/components/dataDisplay/index.js"
+      ],
+      "@aqtiva/modules/components/dataEntry": [
+        "libs/modules/src/lib/components/dataEntry/index.js"
+      ],
+      "@aqtiva/modules/components/feedback": [
+        "libs/modules/src/lib/components/feedback/index.js"
+      ],
+      "@aqtiva/modules/components/general": [
+        "libs/modules/src/lib/components/general/index.js"
+      ],
+      "@aqtiva/modules/components/layout": [
+        "libs/modules/src/lib/components/layout/index.js"
+      ],
+      "@aqtiva/modules/components/navigation": [
+        "libs/modules/src/lib/components/navigation/index.js"
+      ],
+      "@aqtiva/modules/components/others": [
+        "libs/modules/src/lib/components/others/index.js"
+      ],
+      "@aqtiva/modules/components/table": [
+        "libs/modules/src/lib/components/table/index.js"
+      ],
+      "@aqtiva/modules/dashboards/Academy": [
+        "libs/modules/src/lib/dashboards/Academy/index.js"
+      ],
+      "@aqtiva/modules/dashboards/Analytics": [
+        "libs/modules/src/lib/dashboards/Analytics/index.js"
+      ],
+      "@aqtiva/modules/dashboards/CRM": [
+        "libs/modules/src/lib/dashboards/CRM/index.js"
+      ],
+      "@aqtiva/modules/dashboards/Crypto": [
+        "libs/modules/src/lib/dashboards/Crypto/index.js"
+      ],
+      "@aqtiva/modules/dashboards/ECommerce": [
+        "libs/modules/src/lib/dashboards/ECommerce/index.js"
+      ],
+      "@aqtiva/modules/dashboards/HealthCare": [
+        "libs/modules/src/lib/dashboards/HealthCare/index.js"
+      ],
+      "@aqtiva/modules/dashboards/Metrics": [
+        "libs/modules/src/lib/dashboards/Metrics/index.js"
+      ],
+      "@aqtiva/modules/dashboards/Widgets": [
+        "libs/modules/src/lib/dashboards/Widgets/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Carts": [
+        "libs/modules/src/lib/ecommerce/Carts/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Checkout": [
+        "libs/modules/src/lib/ecommerce/Checkout/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Confirmation": [
+        "libs/modules/src/lib/ecommerce/Confirmation/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Customers": [
+        "libs/modules/src/lib/ecommerce/Customers/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Invoice1": [
+        "libs/modules/src/lib/ecommerce/Invoice1/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Invoice2": [
+        "libs/modules/src/lib/ecommerce/Invoice2/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Invoice3": [
+        "libs/modules/src/lib/ecommerce/Invoice3/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Orders": [
+        "libs/modules/src/lib/ecommerce/Orders/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/ProductDetail": [
+        "libs/modules/src/lib/ecommerce/ProductDetail/index.js"
+      ],
+      "@aqtiva/modules/ecommerce/Products": [
+        "libs/modules/src/lib/ecommerce/Products/index.js"
+      ],
+      "@aqtiva/modules/extraPages/AboutUs": [
+        "libs/modules/src/lib/extraPages/AboutUs/index.js"
+      ],
+      "@aqtiva/modules/extraPages/ContactUs": [
+        "libs/modules/src/lib/extraPages/ContactUs/index.js"
+      ],
+      "@aqtiva/modules/extraPages/FAQ": [
+        "libs/modules/src/lib/extraPages/FAQ/index.js"
+      ],
+      "@aqtiva/modules/extraPages/KnowledgeBase": [
+        "libs/modules/src/lib/extraPages/KnowledgeBase/index.js"
+      ],
+      "@aqtiva/modules/extraPages/Portfolio": [
+        "libs/modules/src/lib/extraPages/Portfolio/index.js"
+      ],
+      "@aqtiva/modules/extraPages/Pricing": [
+        "libs/modules/src/lib/extraPages/Pricing/index.js"
+      ],
+      "@aqtiva/modules/pos": ["libs/modules/src/lib/pos/index.js"],
+      "@aqtiva/modules/pos/OrderSummary": [
+        "libs/modules/src/lib/pos/OrderSummary/index.js"
+      ],
+      "@aqtiva/modules/prestamos/solicitudPrestamo": [
+        "libs/modules/src/lib/prestamos/solicitudPrestamo/index.js"
+      ],
+      "@aqtiva/modules/productos": [
+        "libs/modules/src/lib/pos/productos/index.js"
+      ],
+      "@aqtiva/modules/proveedores": [
+        "libs/modules/src/lib/pos/proveedores/index.js"
+      ],
+      "@aqtiva/modules/server": ["libs/modules/src/server.js"],
+      "@aqtiva/modules/thirdParty": [
+        "libs/modules/src/lib/thirdParty/index.js"
+      ],
+      "@aqtiva/modules/userList/Flat": [
+        "libs/modules/src/lib/userList/Flat/index.js"
+      ],
+      "@aqtiva/modules/userList/Modern": [
+        "libs/modules/src/lib/userList/Modern/index.js"
+      ],
+      "@aqtiva/modules/userList/Standard": [
+        "libs/modules/src/lib/userList/Standard/index.js"
+      ],
+      "@aqtiva/modules/userPages": ["libs/modules/src/lib/userPages/index.js"],
+      "@aqtiva/services/auth": ["libs/services/auth/src/lib/index.js"],
+      "@aqtiva/services/auth/JWT": ["libs/services/auth/lib/jwt-auth/index.js"],
+      "@aqtiva/services/auth/JWTAuthProvider": [
+        "libs/services/auth/src/lib/jwt-auth/JWTAuthProvider.js"
+      ],
+      "@aqtiva/services/localization": [
+        "libs/services/localization/src/index.js"
+      ],
+      "@aqtiva/svg-icons": ["libs/svg-icons/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
