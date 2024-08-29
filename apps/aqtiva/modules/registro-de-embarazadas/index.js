@@ -11,7 +11,7 @@ import ModalRegistrarMujeresEmbarazadas from './ModalRegistrarMujeresEmbarazadas
 import AppMenu from '@aqtiva/components/AppMenu';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { GrMapLocation } from 'react-icons/gr';
-import ModalProgramarVisita from './ModalProgramarVisita';
+import ModalRegistrarVisita from './ModalRegistrarVisita';
 
 const Registro = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const Registro = () => {
   const [registro, setRegistro] = useState(null);
   const [modalVisita, setModalVisita] = useState(false);
   const { get } = api(
-    'mujeres-embarazadas',
+    'embarazadas',
     dispatch,
     setMujeresEmbarazadas,
     mujeresEmbarazadas
@@ -82,7 +82,7 @@ const Registro = () => {
               },
             },
             {
-              label: 'Programar visita',
+              label: 'Registrar visita',
               icon: <GrMapLocation />,
               onClick: () => {
                 setRegistro(item);
@@ -136,7 +136,7 @@ const Registro = () => {
         }}
         registro={registro}
       />
-      <ModalProgramarVisita
+      <ModalRegistrarVisita
         embarazada={registro}
         onOk={async () => {
           await get(search);

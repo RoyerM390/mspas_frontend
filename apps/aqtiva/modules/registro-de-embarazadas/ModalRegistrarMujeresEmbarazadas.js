@@ -4,10 +4,10 @@ import {
   DatePicker,
   Divider,
   Form,
-  Input,
+  Input, InputNumber,
   Modal,
   Select,
-  Switch,
+  Switch
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
@@ -27,7 +27,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
   const dispatch = useDispatch();
   const [agregarEncargado, setAgregarEncargado] = useState(false);
   const { create, genericGet, genericPost } = api(
-    'mujeres-embarazadas',
+    'embarazadas',
     dispatch
   );
   const [enfermedades, setEnfermedades] = useState([]);
@@ -43,19 +43,22 @@ const ModalRegistrarMujeresEmbarazadas = ({
     if (registro) {
       form.setFieldsValue({
         ...registro,
-        enfermedades: registro.mujeres_embarazadas_enfermedades.map(
+        enfermedades: registro.embarazadas_enfermedades.map(
           (me) => me.enfermedades_id
         ),
         fecha_nacimiento: dayjs(registro.fecha_nacimiento),
         fecha_parto: dayjs(registro.fecha_parto),
       });
       if (registro.encargado_embarazada) {
+        console.log(registro.encargado_embarazada)
         form.setFieldsValue({
-          encargado_cui: registro.encargado_embarazada.cui,
-          encargado_nombres: registro.encargado_embarazada.nombres,
-          encargado_apellidos: registro.encargado_embarazada.apellidos,
-          encargado_telefono: registro.encargado_embarazada.telefono,
-          encargado_direccion: registro.encargado_embarazada.direccion,
+          encargado: [{
+            cui: registro.encargado_embarazada.cui,
+            nombres: registro.encargado_embarazada.nombres,
+            apellidos: registro.encargado_embarazada.apellidos,
+            telefono: +registro.encargado_embarazada.telefono || 0,
+            direccion: registro.encargado_embarazada.direccion,
+          }]
         });
         setAgregarEncargado(true);
       }
@@ -91,11 +94,11 @@ const ModalRegistrarMujeresEmbarazadas = ({
           const values = await form.validateFields();
           if (registro) {
             await genericPost(
-              `mujeres-embarazadas/actualizar/${registro.id}`,
+              `embarazadas/actualizar/${registro.id}`,
               values
             );
           } else {
-            await create(values);
+            await create({ ...values, encargado: values.encargado.length > 0 ? values.encargado[0] : undefined });
           }
           form.resetFields();
           onOk();
@@ -103,14 +106,17 @@ const ModalRegistrarMujeresEmbarazadas = ({
           if (e.errorFields) {
             return Promise.reject();
           }
+        } finally {
+          setAgregarEncargado(false)
         }
       }}
       onCancel={() => {
+        setAgregarEncargado(false)
         form.resetFields();
         onCancel();
       }}
     >
-      <Form form={form}>
+      <Form form={form} autoComplete="off" initialValues={{'encargado': [{cui: '', nombres: '', apellidos: '', telefono:'', direccion: ''}]}}>
         <AppRowContainer>
           <Col>
             <Form.Item
@@ -129,7 +135,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
                 }),
               ]}
             >
-              <Input style={{ width: '100%' }} />
+              <Input autoComplete='off' style={{ width: '100%' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -140,7 +146,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               label="Nombres"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input />
+              <Input autoComplete='off'/>
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -149,7 +155,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               label="Apellidos"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input />
+              <Input autoComplete='off'/>
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -172,7 +178,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               name="ocupacion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input />
+              <Input autoComplete='off'/>
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -181,7 +187,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               name="telefono"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input />
+              <InputNumber autoComplete='off' />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -210,7 +216,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               label="Periodo de gestacion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input />
+              <Input autoComplete='off'/>
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -243,11 +249,6 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input.TextArea />
             </Form.Item>
           </Col>
-          <Col xs={8}>
-            <Form.Item label="Proxima cita" name="proxima_cita" rules={[{required: true, message: 'Campo requerido'}]}>
-              <DatePicker />
-            </Form.Item>
-          </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col>
@@ -272,70 +273,78 @@ const ModalRegistrarMujeresEmbarazadas = ({
         {agregarEncargado && (
           <>
             <Divider>Datos del encargado</Divider>
-            <AppRowContainer>
-              <Col xs={8}>
-                <Form.Item
-                  label="CUI"
-                  name="encargado_cui"
-                  rules={[
-                    ({ getFieldValue }) => ({
-                      validator(rule, value) {
-                        if (
-                          value === null ||
-                          value === '' ||
-                          value === undefined
-                        ) {
-                          return Promise.resolve();
-                        } else if (cuiValido(value)) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject('El CUI no es valido');
-                      },
-                    }),
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col xs={8}>
-                <Form.Item
-                  label="Nombres"
-                  name="encargado_nombres"
-                  rules={[{ required: true, message: 'Campo requerido' }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col xs={8}>
-                <Form.Item
-                  label="Apellidos"
-                  name="encargado_apellidos"
-                  rules={[{ required: true, message: 'Campo requerido' }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-            </AppRowContainer>
-            <AppRowContainer>
-              <Col xs={8}>
-                <Form.Item
-                  name="encargado_telefono"
-                  label="Telefono"
-                  rules={[{ required: true, message: 'Campo requerido' }]}
-                >
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col xs={16}>
-                <Form.Item
-                  name="encargado_direccion"
-                  label="Direccion"
-                  rules={[{ required: true, message: 'Campo requerido' }]}
-                >
-                  <Input.TextArea />
-                </Form.Item>
-              </Col>
-            </AppRowContainer>
+            <Form.List name={'encargado'}>
+              {(fields) =>
+                fields.map((field) => (
+                  <React.Fragment key={field.key}>
+                    <AppRowContainer>
+                      <Col xs={8}>
+                        <Form.Item
+                          label="CUI"
+                          name={[field.name, 'cui']}
+                          rules={[
+                            ({ getFieldValue }) => ({
+                              validator(rule, value) {
+                                if (
+                                  value === null ||
+                                  value === '' ||
+                                  value === undefined
+                                ) {
+                                  return Promise.resolve();
+                                } else if (cuiValido(value)) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject('El CUI no es valido');
+                              },
+                            }),
+                          ]}
+                        >
+                          <Input autoComplete='off'/>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={8}>
+                        <Form.Item
+                          label="Nombres"
+                          name={[field.name, 'nombres']}
+                          rules={[{ required: true, message: 'Campo requerido' }]}
+                        >
+                          <Input autoComplete='off'/>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={8}>
+                        <Form.Item
+                          label="Apellidos"
+                          name={[field.name, 'apellidos']}
+                          rules={[{ required: true, message: 'Campo requerido' }]}
+                        >
+                          <Input autoComplete='off'/>
+                        </Form.Item>
+                      </Col>
+                    </AppRowContainer>
+                    <AppRowContainer>
+                      <Col xs={8}>
+                        <Form.Item
+                          name={[field.name, 'telefono']}
+                          label="Telefono"
+                          rules={[{ required: true, message: 'Campo requerido' }]}
+                        >
+                          <InputNumber autoComplete='off'/>
+                        </Form.Item>
+                      </Col>
+                      <Col xs={16}>
+                        <Form.Item
+                          name={[field.name, 'direccion']}
+                          label="Direccion"
+                          rules={[{ required: true, message: 'Campo requerido' }]}
+                        >
+                          <Input.TextArea />
+                        </Form.Item>
+                      </Col>
+                    </AppRowContainer>
+                  </React.Fragment>
+                ))
+              }
+            </Form.List>
           </>
         )}
       </Form>
