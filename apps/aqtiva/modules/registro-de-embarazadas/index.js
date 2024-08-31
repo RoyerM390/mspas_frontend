@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppsContainer from '@aqtiva/components/AppsContainer';
-import { Button, Col, Input } from 'antd';
+import { Button, Col, Input, Tag } from 'antd';
 import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
@@ -10,18 +10,21 @@ import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import ModalRegistrarMujeresEmbarazadas from './ModalRegistrarMujeresEmbarazadas';
 import AppMenu from '@aqtiva/components/AppMenu';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { GrMapLocation } from 'react-icons/gr';
-import ModalRegistrarCitaPrenatal from './ModalRegistrarCitaPrenatal';
+
 import { IoEyeOutline } from 'react-icons/io5';
 import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
+import dayjs from 'dayjs';
+import ModalRegistrarUltraSonido from './ModalRegistrarUltraSonido';
+import { FaBaby } from 'react-icons/fa';
+import ModalVerUltraSonidos from './ModalVerUltraSonidos';
 
 const Registro = () => {
   const dispatch = useDispatch();
   const [mujeresEmbarazadas, setMujeresEmbarazadas] = useState([]);
   const [search, setSearch] = useState('');
   const [registro, setRegistro] = useState(null);
-  const [modalRegistrarCita, setModalRegistrarCita] = useState(false);
   const [modalVerVisitas, setModalVerVisitas] = useState(false);
+  const [modalVerUltraSonidos, setModalVerUltraSonidos] = useState(false);
   const { get } = api(
     'embarazadas',
     dispatch,
@@ -72,6 +75,23 @@ const Registro = () => {
     },
     {
       key: 9,
+      title: 'Proxima cita',
+      dataIndex: 'citas_prenatales',
+      render: (citas) =>
+        citas.length > 0 ? (
+          <Tag
+            color={
+              dayjs(citas[0].fecha_proxima_cita).diff(dayjs(), 'day') <= 3
+                ? 'red'
+                : 'blue'
+            }
+          >
+            {getFormattedDate(citas[0].fecha_proxima_cita)}
+          </Tag>
+        ) : null,
+    },
+    {
+      key: 9,
       title: 'Acciones',
       render: (item) => (
         <AppMenu
@@ -93,11 +113,11 @@ const Registro = () => {
               },
             },
             {
-              label: 'Registrar visita prenatal',
-              icon: <GrMapLocation />,
+              label: 'Ver ultrasonidos',
+              icon: <FaBaby />,
               onClick: () => {
                 setRegistro(item);
-                setModalRegistrarCita(true);
+                setModalVerUltraSonidos(true);
               },
             },
           ]}
@@ -147,15 +167,6 @@ const Registro = () => {
         }}
         registro={registro}
       />
-      <ModalRegistrarCitaPrenatal
-        embarazada={registro}
-        onOk={async () => {
-          await get(search);
-          setModalRegistrarCita(false);
-        }}
-        open={modalRegistrarCita}
-        onCancel={() => setModalRegistrarCita(false)}
-      />
 
       <ModalVerCitasPrenatales
         embarazada={registro}
@@ -165,6 +176,15 @@ const Registro = () => {
         }}
         open={modalVerVisitas}
         onCancel={() => setModalVerVisitas(false)}
+      />
+      <ModalVerUltraSonidos
+        open={modalVerUltraSonidos}
+        onCancel={() => setModalVerUltraSonidos(false)}
+        onOk={async () => {
+          await get();
+          setModalVerUltraSonidos(false);
+        }}
+        embarazada={registro}
       />
     </AppsContainer>
   );

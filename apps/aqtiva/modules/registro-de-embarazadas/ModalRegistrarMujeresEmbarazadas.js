@@ -4,16 +4,18 @@ import {
   DatePicker,
   Divider,
   Form,
-  Input, InputNumber,
+  Input,
+  InputNumber,
   Modal,
   Select,
-  Switch
+  Switch,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { cuiValido } from 'validador-dpi-nit';
 import dayjs from 'dayjs';
+import AppSelect from '@aqtiva/components/AppSelect';
 
 const format = 'DD/MM/YYYY';
 const ModalRegistrarMujeresEmbarazadas = ({
@@ -26,10 +28,8 @@ const ModalRegistrarMujeresEmbarazadas = ({
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [agregarEncargado, setAgregarEncargado] = useState(false);
-  const { create, genericGet, genericPost } = api(
-    'embarazadas',
-    dispatch
-  );
+  const { create, genericGet, genericPost } = api('embarazadas', dispatch);
+  const [comunidades, setComunidades] = useState([]);
   const [enfermedades, setEnfermedades] = useState([]);
   const [enfermedadesSeleccionadas, setEnfermedadesSeleccionadas] = useState(
     []
@@ -37,6 +37,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
 
   useEffect(() => {
     genericGet('enfermedades', dispatch, setEnfermedades, enfermedades);
+    genericGet('comunidades', dispatch, setComunidades, comunidades);
   }, []);
 
   useEffect(() => {
@@ -50,15 +51,17 @@ const ModalRegistrarMujeresEmbarazadas = ({
         fecha_parto: dayjs(registro.fecha_parto),
       });
       if (registro.encargado_embarazada) {
-        console.log(registro.encargado_embarazada)
+        console.log(registro.encargado_embarazada);
         form.setFieldsValue({
-          encargado: [{
-            cui: registro.encargado_embarazada.cui,
-            nombres: registro.encargado_embarazada.nombres,
-            apellidos: registro.encargado_embarazada.apellidos,
-            telefono: +registro.encargado_embarazada.telefono || 0,
-            direccion: registro.encargado_embarazada.direccion,
-          }]
+          encargado: [
+            {
+              cui: registro.encargado_embarazada.cui,
+              nombres: registro.encargado_embarazada.nombres,
+              apellidos: registro.encargado_embarazada.apellidos,
+              telefono: +registro.encargado_embarazada.telefono || 0,
+              direccion: registro.encargado_embarazada.direccion,
+            },
+          ],
         });
         setAgregarEncargado(true);
       }
@@ -93,32 +96,49 @@ const ModalRegistrarMujeresEmbarazadas = ({
         try {
           const values = await form.validateFields();
           if (registro) {
-            await genericPost(
-              `embarazadas/actualizar/${registro.id}`,
-              values
-            );
+            await genericPost(`embarazadas/actualizar/${registro.id}`, values);
           } else {
-            await create({ ...values, encargado: values.encargado.length > 0 ? values.encargado[0] : undefined });
+            await create({
+              ...values,
+              encargado:
+                values?.encargado?.length > 0 ? values.encargado[0] : undefined,
+            });
           }
           form.resetFields();
           onOk();
         } catch (e) {
+          console.log(e);
           if (e.errorFields) {
             return Promise.reject();
           }
         } finally {
-          setAgregarEncargado(false)
+          setAgregarEncargado(false);
         }
       }}
       onCancel={() => {
-        setAgregarEncargado(false)
+        setAgregarEncargado(false);
         form.resetFields();
         onCancel();
       }}
     >
-      <Form form={form} autoComplete="off" initialValues={{'encargado': [{cui: '', nombres: '', apellidos: '', telefono:'', direccion: ''}]}}>
+      <Form
+        form={form}
+        autoComplete="off"
+        initialValues={{
+          encargado: [
+            {
+              cui: '',
+              nombres: '',
+              apellidos: '',
+              telefono: '',
+              direccion: '',
+            },
+          ],
+        }}
+      >
+        <Divider>Datos generales</Divider>
         <AppRowContainer>
-          <Col>
+          <Col xs={4}>
             <Form.Item
               name="cui"
               label="CUI"
@@ -135,7 +155,43 @@ const ModalRegistrarMujeresEmbarazadas = ({
                 }),
               ]}
             >
-              <Input autoComplete='off' style={{ width: '100%' }} />
+              <Input autoComplete="off" style={{ width: '100%' }} />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Num. de casa'}
+              name={'numero_de_casa'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Num. de expediente'}
+              name={'numero_expediente'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Comunidad'}
+              name={'comunidad_id'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <AppSelect menus={comunidades} label={'nombre'} key={'id'} />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Pueblo'}
+              name={'pueblo'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -146,7 +202,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               label="Nombres"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input autoComplete='off'/>
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -155,7 +211,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               label="Apellidos"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input autoComplete='off'/>
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -167,8 +223,14 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <DatePicker format={format} />
             </Form.Item>
           </Col>
-          <Col xs={6}>
-
+          <Col xs={4}>
+            <Form.Item
+              label="Telefono"
+              name="telefono"
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <InputNumber autoComplete="off" style={{ width: '100%' }} />
+            </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
@@ -178,19 +240,10 @@ const ModalRegistrarMujeresEmbarazadas = ({
               name="ocupacion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input autoComplete='off'/>
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
-          <Col xs={8}>
-            <Form.Item
-              label="Telefono"
-              name="telefono"
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
-              <InputNumber autoComplete='off' />
-            </Form.Item>
-          </Col>
-          <Col xs={8}>
+          <Col xs={10}>
             <Form.Item
               label="Direccion"
               name="direccion"
@@ -199,9 +252,84 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input.TextArea />
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item
+              label={'Servicio de salud'}
+              name={'servicio_de_salud'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+        </AppRowContainer>
+        <Divider>Embarazo</Divider>
+        <AppRowContainer>
+          <Col xs={4}>
+            <Form.Item
+              label={'Fecha ultima regla'}
+              name={'fecha_ultima_regla'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <DatePicker />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Gestas'}
+              name={'gestas'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'Cesarea'}
+              name={'cesarea'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'HM'}
+              name={'hm'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'HV'}
+              name={'hv'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={4}>
+            <Form.Item
+              label={'AB'}
+              name={'ab'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
         </AppRowContainer>
         <AppRowContainer>
-          <Col xs={8}>
+          <Col xs={4}>
+            <Form.Item
+              label={'PES'}
+              name={'pes'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={6}>
             <Form.Item
               name="fecha_parto"
               label="Fecha de parto prevista"
@@ -210,13 +338,13 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <DatePicker format={format} />
             </Form.Item>
           </Col>
-          <Col xs={8}>
+          <Col xs={6}>
             <Form.Item
               name="periodo_gestacion"
               label="Periodo de gestacion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input autoComplete='off'/>
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -255,13 +383,6 @@ const ModalRegistrarMujeresEmbarazadas = ({
             <Form.Item label="Agregar encargado">
               <Switch
                 onChange={(value) => {
-                  form.resetFields([
-                    'encargado_cui',
-                    'encargado_nombres',
-                    'encargado_apellidos',
-                    'encargado_telefono',
-                    'encargado_direccion',
-                  ]);
                   setAgregarEncargado(value);
                 }}
                 defaultChecked={agregarEncargado}
@@ -299,25 +420,29 @@ const ModalRegistrarMujeresEmbarazadas = ({
                             }),
                           ]}
                         >
-                          <Input autoComplete='off'/>
+                          <Input autoComplete="off" />
                         </Form.Item>
                       </Col>
                       <Col xs={8}>
                         <Form.Item
                           label="Nombres"
                           name={[field.name, 'nombres']}
-                          rules={[{ required: true, message: 'Campo requerido' }]}
+                          rules={[
+                            { required: true, message: 'Campo requerido' },
+                          ]}
                         >
-                          <Input autoComplete='off'/>
+                          <Input autoComplete="off" />
                         </Form.Item>
                       </Col>
                       <Col xs={8}>
                         <Form.Item
                           label="Apellidos"
                           name={[field.name, 'apellidos']}
-                          rules={[{ required: true, message: 'Campo requerido' }]}
+                          rules={[
+                            { required: true, message: 'Campo requerido' },
+                          ]}
                         >
-                          <Input autoComplete='off'/>
+                          <Input autoComplete="off" />
                         </Form.Item>
                       </Col>
                     </AppRowContainer>
@@ -326,16 +451,20 @@ const ModalRegistrarMujeresEmbarazadas = ({
                         <Form.Item
                           name={[field.name, 'telefono']}
                           label="Telefono"
-                          rules={[{ required: true, message: 'Campo requerido' }]}
+                          rules={[
+                            { required: true, message: 'Campo requerido' },
+                          ]}
                         >
-                          <InputNumber autoComplete='off'/>
+                          <InputNumber autoComplete="off" />
                         </Form.Item>
                       </Col>
                       <Col xs={16}>
                         <Form.Item
                           name={[field.name, 'direccion']}
                           label="Direccion"
-                          rules={[{ required: true, message: 'Campo requerido' }]}
+                          rules={[
+                            { required: true, message: 'Campo requerido' },
+                          ]}
                         >
                           <Input.TextArea />
                         </Form.Item>
