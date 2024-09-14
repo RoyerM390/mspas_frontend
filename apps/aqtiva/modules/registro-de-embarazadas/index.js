@@ -15,8 +15,10 @@ import { IoEyeOutline } from 'react-icons/io5';
 import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
 import dayjs from 'dayjs';
 import ModalRegistrarUltraSonido from './ModalRegistrarUltraSonido';
-import { FaBaby } from 'react-icons/fa';
+import { FaBaby, FaRegEye } from 'react-icons/fa';
 import ModalVerUltraSonidos from './ModalVerUltraSonidos';
+import { PiBaby } from 'react-icons/pi';
+import { MdOutlineBabyChangingStation } from 'react-icons/md';
 
 const Registro = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,15 @@ const Registro = () => {
     get();
   }, []);
 
+  const generarColorTag = (fecha) => {
+    const diferencia = dayjs(fecha).diff(
+      dayjs().utc(true).startOf('date'),
+      'day'
+    );
+    if (diferencia <= 2) return 'red';
+    if (diferencia >= 3 && diferencia <= 14) return 'orange';
+    if (diferencia >= 15) return 'green';
+  };
   const columns = [
     {
       key: 1,
@@ -79,13 +90,7 @@ const Registro = () => {
       dataIndex: 'citas_prenatales',
       render: (citas) =>
         citas.length > 0 ? (
-          <Tag
-            color={
-              dayjs(citas[0].fecha_proxima_cita).diff(dayjs(), 'day') <= 3
-                ? 'red'
-                : 'blue'
-            }
-          >
+          <Tag color={generarColorTag(citas[0].fecha_proxima_cita)}>
             {getFormattedDate(citas[0].fecha_proxima_cita)}
           </Tag>
         ) : null,
@@ -96,6 +101,14 @@ const Registro = () => {
       render: (item) => (
         <AppMenu
           options={[
+            {
+              label: 'Ver datos',
+              icon: <FaRegEye />,
+              onClick: () => {
+                setRegistro(item);
+                setModalRegistro(true);
+              },
+            },
             {
               label: 'Modificar',
               icon: <AiOutlineEdit />,
@@ -115,6 +128,22 @@ const Registro = () => {
             {
               label: 'Ver ultrasonidos',
               icon: <FaBaby />,
+              onClick: () => {
+                setRegistro(item);
+                setModalVerUltraSonidos(true);
+              },
+            },
+            {
+              label: 'Registrar parto',
+              icon: <MdOutlineBabyChangingStation />,
+              onClick: () => {
+                setRegistro(item);
+                setModalVerUltraSonidos(true);
+              },
+            },
+            {
+              label: 'Registrar posparto',
+              icon: <PiBaby />,
               onClick: () => {
                 setRegistro(item);
                 setModalVerUltraSonidos(true);

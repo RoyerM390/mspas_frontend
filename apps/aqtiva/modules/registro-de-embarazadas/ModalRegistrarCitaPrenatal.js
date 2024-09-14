@@ -15,12 +15,25 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
     <Modal
       title={`Registro de cita de: ${embarazada?.nombres}`}
       open={open}
-      onCancel={onCancel}
+      onCancel={() => {
+        form.resetFields();
+        onCancel();
+      }}
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost(`citas-prenatales/${embarazada?.id}`, values);
+          const fecha = values.fecha_proxima_cita
+            .utc(true)
+            .startOf('date')
+            .toISOString();
+          console.log('values antes de enviar', values);
+          console.log('fecha antes de enviar', fecha);
+          await genericPost(`citas-prenatales/${embarazada?.id}`, {
+            ...values,
+            fecha_proxima_cita: fecha,
+          });
           onOk();
+          form.resetFields();
         } catch (e) {
           console.log(e);
           if (e.errorFields) {

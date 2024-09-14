@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { StyledAppSelect, StyledOption } from './index.styled';
 import { get } from 'lodash';
+import { useSelector } from 'react-redux';
 
 const AppSelect = ({
   valueKey,
@@ -14,34 +15,51 @@ const AppSelect = ({
   showSearch,
   placeholder,
   onSearch,
-  mode,
   style,
   filterOption = false,
+  allowClear = true,
   ...rest
 }) => {
-  const [selectionType, setSelectionType] = useState(defaultValue);
+  const [selectionType, setSelectionType] = useState(
+    Array.isArray(defaultValue)
+      ? defaultValue.map((val) => val[valueKey])
+      : defaultValue
+  );
+  const { loading } = useSelector(({ common }) => common);
 
   useEffect(() => {
-    setSelectionType(defaultValue);
+    setSelectionType(
+      Array.isArray(defaultValue)
+        ? defaultValue.map((val) => val[valueKey])
+        : defaultValue
+    );
   }, [defaultValue]);
 
   const handleSelectionType = (value) => {
-    setSelectionType(menus.filter((item) => item[valueKey] === value)[0]);
-    if (onChange !== undefined) {
-      onChange(value);
+    let option = null;
+    if (Array.isArray(defaultValue) || Array.isArray(value)) {
+      option = menus
+        .filter((item) => value.includes(+item[valueKey]))
+        .map((menu) => menu[valueKey]);
+    } else {
+      option = menus.filter((item) => item[valueKey] === value)[0];
     }
-    if (value === undefined || value === []) {
+    setSelectionType(option);
+    if (onChange !== undefined) {
+      onChange(value, option);
+    }
+    if (value === undefined) {
       if (onSearch) onSearch();
     }
   };
 
   const getContacLabel = (menu = selectionType) => {
     if (typeof concatLabel === 'string') {
-      return get(menu, concatLabel) || '';
+      return get(menu, concatLabel);
     } else {
       let concatenated = '';
       for (const item of concatLabel) {
-        concatenated += ` ${get(menu, item)}`;
+        concatenated += ` ${get(menu, item) || item}`;
       }
       return concatenated;
     }
@@ -50,37 +68,61 @@ const AppSelect = ({
   return (
     <StyledAppSelect
       {...rest}
-      allowClear={true}
+      loading={loading}
+      allowClear={allowClear}
       filterOption={filterOption}
       showSearch={showSearch}
-      value={selectionType && selectionType[valueKey]}
-      defaultValue={selectionType && selectionType[valueKey]}
+      value={
+        Array.isArray(selectionType)
+          ? selectionType
+          : selectionType
+          ? selectionType[valueKey]
+          : null
+      }
+      defaultValue={
+        Array.isArray(selectionType)
+          ? selectionType
+          : selectionType
+          ? selectionType[valueKey]
+          : null
+      }
       onChange={handleSelectionType}
       placeholder={placeholder}
       onSearch={onSearch}
       style={style}
       // optionLabelProp="label"
     >
-      {selectionType ? (
+      {/*{selectionType ? (*/}
+      {/*  <StyledOption*/}
+      {/*    label={get(selectionType, label)}*/}
+      {/*    value={selectionType[valueKey]}*/}
+      {/*  >*/}
+      {/*    {`${get(selectionType, label)} ${*/}
+      {/*      concatLabel ? getContacLabel() : ''*/}
+      {/*    }`}*/}
+      {/*  </StyledOption>*/}
+      {/*) : ( */}
+      {/*  menus.map((menu, index) => (*/}
+      {/*    <StyledOption*/}
+      {/*      key={index}*/}
+      {/*      label={get(menu, label)}*/}
+      {/*      value={menu[valueKey]}*/}
+      {/*    >*/}
+      {/*      {`${get(menu, label)} ${concatLabel ? getContacLabel(menu) : ''}`}*/}
+      {/*    </StyledOption>*/}
+      {/*  ))*/}
+      {/*)}*/}
+      {menus.map((menu, index) => (
         <StyledOption
-          label={get(selectionType, label)}
-          value={selectionType[valueKey]}
+          key={index}
+          label={get(menu, label) || label}
+          value={menu[valueKey]}
         >
-          {`${get(selectionType, label)} ${
-            concatLabel ? getContacLabel() : ''
+          {`${get(menu, label) || label} ${
+            concatLabel ? getContacLabel(menu) : ''
           }`}
         </StyledOption>
-      ) : (
-        menus.map((menu, index) => (
-          <StyledOption
-            key={index}
-            label={get(menu, label)}
-            value={menu[valueKey]}
-          >
-            {`${get(menu, label)} ${concatLabel ? getContacLabel(menu) : ''}`}
-          </StyledOption>
-        ))
-      )}
+      ))}
     </StyledAppSelect>
   );
 };
