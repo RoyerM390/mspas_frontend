@@ -90,7 +90,9 @@ const JWTAuthAuthProvider = ({
         isAuthenticated: false,
         isLoading: false,
       });
-      fetchError(error?.response?.data?.error || 'Something went wrong');
+      fetchError(
+        error?.response?.data?.error || 'Usuario o contraseña incorrectos'
+      );
     }
   };
 
@@ -125,7 +127,7 @@ const JWTAuthAuthProvider = ({
         isLoading: false,
       });
       console.log('error:', error.response.data.error);
-      fetchError(error?.response?.data?.error || 'Something went wrong');
+      fetchError(error?.response?.data?.error || 'Algo salio mal');
     }
   };
 

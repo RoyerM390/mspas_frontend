@@ -19,6 +19,9 @@ import { FaBaby, FaRegEye } from 'react-icons/fa';
 import ModalVerUltraSonidos from './ModalVerUltraSonidos';
 import { PiBaby } from 'react-icons/pi';
 import { MdOutlineBabyChangingStation } from 'react-icons/md';
+import ModalVerDatos from './ModalVerDatos';
+import ModalRegistrarPosParto from './ModalRegistrarPosParto';
+import ModalRegistrarParto from './ModalRegistrarParto';
 
 const Registro = () => {
   const dispatch = useDispatch();
@@ -26,6 +29,9 @@ const Registro = () => {
   const [search, setSearch] = useState('');
   const [registro, setRegistro] = useState(null);
   const [modalVerVisitas, setModalVerVisitas] = useState(false);
+  const [modalVerDatos, setModalVerDatos] = useState(false);
+  const [modalPosParto, setModalPosParto] = useState(false);
+  const [modalParto, setModalParto] = useState(false);
   const [modalVerUltraSonidos, setModalVerUltraSonidos] = useState(false);
   const { get } = api(
     'embarazadas',
@@ -106,7 +112,7 @@ const Registro = () => {
               icon: <FaRegEye />,
               onClick: () => {
                 setRegistro(item);
-                setModalRegistro(true);
+                setModalVerDatos(true);
               },
             },
             {
@@ -136,17 +142,19 @@ const Registro = () => {
             {
               label: 'Registrar parto',
               icon: <MdOutlineBabyChangingStation />,
+              disabled: !!item.parto_id,
               onClick: () => {
                 setRegistro(item);
-                setModalVerUltraSonidos(true);
+                setModalParto(true);
               },
             },
             {
               label: 'Registrar posparto',
               icon: <PiBaby />,
+              disabled: !!item.posparto_id,
               onClick: () => {
                 setRegistro(item);
-                setModalVerUltraSonidos(true);
+                setModalPosParto(true);
               },
             },
           ]}
@@ -214,6 +222,30 @@ const Registro = () => {
           setModalVerUltraSonidos(false);
         }}
         embarazada={registro}
+      />
+      <ModalVerDatos
+        open={modalVerDatos}
+        embarazada={registro}
+        onOk={() => setModalVerDatos(false)}
+        onCancel={() => setModalVerDatos(false)}
+      />
+      <ModalRegistrarPosParto
+        open={modalPosParto}
+        embarazada={registro}
+        onOk={async () => {
+          await get();
+          setModalPosParto(false);
+        }}
+        onCancel={() => setModalPosParto(false)}
+      />
+      <ModalRegistrarParto
+        embarazada={registro}
+        open={modalParto}
+        onOk={async () => {
+          await get();
+          setModalParto(false);
+        }}
+        onCancel={() => setModalParto(false)}
       />
     </AppsContainer>
   );
