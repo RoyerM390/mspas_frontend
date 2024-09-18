@@ -28,17 +28,33 @@ const ModalRegistrarMujeresEmbarazadas = ({
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [agregarEncargado, setAgregarEncargado] = useState(false);
+  const [sectores, setSectores] = useState([]);
   const { create, genericGet, genericPost } = api('embarazadas', dispatch);
-  const [comunidades, setComunidades] = useState([]);
+  const [centrosDeSalud, setCentrosDeSalud] = useState([]);
+  const [pueblos, setPueblos] = useState([]);
   const [enfermedades, setEnfermedades] = useState([]);
   const [enfermedadesSeleccionadas, setEnfermedadesSeleccionadas] = useState(
     []
   );
+  const centroDeSalud = Form.useWatch('centro_de_salud_id', form);
 
   useEffect(() => {
     genericGet('enfermedades', dispatch, setEnfermedades, enfermedades);
-    genericGet('comunidades', dispatch, setComunidades, comunidades);
+    genericGet('centros-de-salud', dispatch, setCentrosDeSalud, centrosDeSalud);
+    genericGet('pueblos', dispatch, setPueblos, pueblos);
   }, []);
+
+  useEffect(() => {
+    form.resetFields(['sector_id']);
+    if (centroDeSalud) {
+      genericGet(
+        `centros-de-salud/sectores/${centroDeSalud}`,
+        dispatch,
+        setSectores,
+        sectores
+      );
+    }
+  }, [centroDeSalud]);
 
   useEffect(() => {
     if (registro) {
@@ -139,7 +155,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
       >
         <Divider>Datos generales</Divider>
         <AppRowContainer>
-          <Col xs={5}>
+          <Col xs={8}>
             <Form.Item
               name="cui"
               label="CUI"
@@ -162,7 +178,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               />
             </Form.Item>
           </Col>
-          <Col xs={5}>
+          <Col xs={8}>
             <Form.Item
               style={{ fontSize: '25px' }}
               label={'Num. de casa'}
@@ -171,38 +187,14 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={5}>
+          <Col xs={8}>
             <Form.Item label={'Num. de expediente'} name={'numero_expediente'}>
-              <Input style={{ fontSize: '25px' }} />
-            </Form.Item>
-          </Col>
-          <Col xs={5}>
-            <Form.Item
-              label={'Comunidad'}
-              name={'comunidad_id'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
-              <AppSelect
-                style={{ fontSize: '25px' }}
-                menus={comunidades}
-                label={'nombre'}
-                valueKey={'id'}
-                defaultValue={registro?.comunidades || null}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={4}>
-            <Form.Item
-              label={'Pueblo'}
-              name={'pueblo'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
-          <Col xs={7}>
+          <Col xs={8}>
             <Form.Item
               name="nombres"
               label="Nombres"
@@ -211,7 +203,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input autoComplete="off" style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={7}>
+          <Col xs={8}>
             <Form.Item
               name="apellidos"
               label="Apellidos"
@@ -220,7 +212,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input autoComplete="off" style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={6}>
+          <Col xs={8}>
             <Form.Item
               name="fecha_nacimiento"
               label="Fecha de nacimiento"
@@ -232,7 +224,54 @@ const ModalRegistrarMujeresEmbarazadas = ({
               />
             </Form.Item>
           </Col>
-          <Col xs={4}>
+        </AppRowContainer>
+        <AppRowContainer>
+          <Col xs={8}>
+            <Form.Item
+              label={'Centro de salud'}
+              name={'centro_de_salud_id'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <AppSelect
+                style={{ fontSize: '25px' }}
+                menus={centrosDeSalud}
+                label={'nombre'}
+                valueKey={'id'}
+                defaultValue={registro?.centros_de_salud || null}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={8}>
+            <Form.Item
+              label={'Sector'}
+              name={'sector_id'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <AppSelect
+                menus={sectores}
+                label={'nombre'}
+                valueKey={'id'}
+                defaultValue={registro?.sectores || null}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={8}>
+            <Form.Item
+              label={'Pueblo'}
+              name={'pueblo'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <AppSelect
+                menus={pueblos}
+                label={'nombre'}
+                valueKey={'id'}
+                defaultValue={registro?.pueblos}
+              />
+            </Form.Item>
+          </Col>
+        </AppRowContainer>
+        <AppRowContainer>
+          <Col xs={8}>
             <Form.Item
               label="Telefono"
               name="telefono"
@@ -244,8 +283,6 @@ const ModalRegistrarMujeresEmbarazadas = ({
               />
             </Form.Item>
           </Col>
-        </AppRowContainer>
-        <AppRowContainer>
           <Col xs={8}>
             <Form.Item
               label="Ocupacion"
@@ -255,7 +292,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input autoComplete="off" style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={10}>
+          <Col xs={8}>
             <Form.Item
               label="Direccion"
               name="direccion"
@@ -264,19 +301,10 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input.TextArea style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col>
-            <Form.Item
-              label={'Servicio de salud'}
-              name={'servicio_de_salud'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
-              <Input style={{ fontSize: '25px' }} />
-            </Form.Item>
-          </Col>
         </AppRowContainer>
         <Divider>Embarazo</Divider>
         <AppRowContainer>
-          <Col xs={5}>
+          <Col xs={8}>
             <Form.Item
               label={'Fecha ultima regla'}
               name={'fecha_ultima_regla'}
@@ -285,7 +313,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <DatePicker style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={5}>
+          <Col xs={8}>
             <Form.Item
               label={'Gestas'}
               name={'gestas'}
@@ -294,7 +322,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={4}>
+          <Col xs={8}>
             <Form.Item
               label={'Cesarea'}
               name={'cesarea'}
@@ -303,7 +331,9 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={3}>
+        </AppRowContainer>
+        <AppRowContainer>
+          <Col xs={6}>
             <Form.Item
               label={'HM'}
               name={'hm'}
@@ -312,7 +342,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={3}>
+          <Col xs={6}>
             <Form.Item
               label={'HV'}
               name={'hv'}
@@ -321,7 +351,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={4}>
+          <Col xs={6}>
             <Form.Item
               label={'AB'}
               name={'ab'}
@@ -330,9 +360,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-        </AppRowContainer>
-        <AppRowContainer>
-          <Col xs={4}>
+          <Col xs={6}>
             <Form.Item
               label={'PES'}
               name={'pes'}
@@ -341,7 +369,9 @@ const ModalRegistrarMujeresEmbarazadas = ({
               <Input style={{ fontSize: '25px' }} />
             </Form.Item>
           </Col>
-          <Col xs={6}>
+        </AppRowContainer>
+        <AppRowContainer>
+          <Col xs={8}>
             <Form.Item
               name="fecha_parto"
               label="Fecha de parto prevista"
@@ -363,9 +393,7 @@ const ModalRegistrarMujeresEmbarazadas = ({
               />
             </Form.Item>
           </Col>
-        </AppRowContainer>
-        <AppRowContainer>
-          {enfermedadesSeleccionadas.includes(16) && (
+          {enfermedadesSeleccionadas.includes(6) && (
             <Col xs={8}>
               <Form.Item
                 label="Otras enfermedades"
@@ -376,7 +404,9 @@ const ModalRegistrarMujeresEmbarazadas = ({
               </Form.Item>
             </Col>
           )}
-          <Col xs={8}>
+        </AppRowContainer>
+        <AppRowContainer>
+          <Col xs={24}>
             <Form.Item label="Observaciones" name="observaciones">
               <Input.TextArea style={{ fontSize: '25px' }} />
             </Form.Item>

@@ -49,5 +49,6 @@ export const StyledAppSelect = styled(Select)`
 export const StyledOption = styled(Option)`
   cursor: pointer;
   padding: 8px;
-  font-size: ${({ theme }) => theme.font.size.base};
+  font-size: 25px;
+  //font-size: ${({ theme }) => theme.font.size.base};
 `;
