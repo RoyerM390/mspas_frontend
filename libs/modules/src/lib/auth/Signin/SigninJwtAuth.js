@@ -44,7 +44,7 @@ const SignInJwtAuth = () => {
             className="form-field"
             rules={[{ required: true, message: 'Debe ingresar su usuario' }]}
           >
-            <Input placeholder='usuario' />
+            <Input placeholder="usuario" />
           </Form.Item>
 
           <Form.Item
@@ -55,17 +55,24 @@ const SignInJwtAuth = () => {
             <Input.Password placeholder={messages['common.password']} />
           </Form.Item>
 
-          <StyledRememberMe>
-            {/*<Checkbox onChange={onRememberMe}>*/}
-            {/*  <IntlMessages id="common.rememberMe" />*/}
-            {/*</Checkbox>*/}
+          {/*<StyledRememberMe>*/}
+          {/*<Checkbox onChange={onRememberMe}>*/}
+          {/*  <IntlMessages id="common.rememberMe" />*/}
+          {/*</Checkbox>*/}
 
-            {/*<StyledSignLink onClick={onGoToForgetPassword}>*/}
-            {/*  <IntlMessages id="common.forgetPassword" />*/}
-            {/*</StyledSignLink>*/}
-          </StyledRememberMe>
+          {/*<StyledSignLink onClick={onGoToForgetPassword}>*/}
+          {/*  <IntlMessages id="common.forgetPassword" />*/}
+          {/*</StyledSignLink>*/}
+          {/*</StyledRememberMe>*/}
 
-          <div className="form-btn-field">
+          <div
+            className="form-btn-field"
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+            }}
+          >
             <SignInButton type="primary" htmlType="submit">
               <IntlMessages id="common.login" />
             </SignInButton>

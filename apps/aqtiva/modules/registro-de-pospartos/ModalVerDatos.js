@@ -4,12 +4,8 @@ import dayjs from 'dayjs';
 import { getFormattedDate } from '@aqtiva/helpers';
 
 const ModalVerDatos = ({ onOk, onCancel, open, embarazada }) => {
-  const [parto, setParto] = useState({});
   const [posParto, setPosParto] = useState({});
   useEffect(() => {
-    if (embarazada?.parto_id) {
-      setParto(embarazada.partos);
-    }
     if (embarazada?.posparto_id) {
       setPosParto(embarazada.pos_partos);
     }
@@ -45,28 +41,6 @@ const ModalVerDatos = ({ onOk, onCancel, open, embarazada }) => {
     {
       label: 'Direccion',
       children: embarazada?.direccion,
-    },
-    {
-      label: 'Enfermedades',
-      children: embarazada?.embarazadas_enfermedades
-        ?.map((enfermedad) => enfermedad.enfermedades.nombre)
-        .join(', '),
-    },
-    {
-      label: 'Otras enfermedades',
-      children: embarazada?.otras_enfermedades,
-    },
-    {
-      label: 'Fecha probable de parto',
-      children: getFormattedDate(embarazada?.fecha_parto),
-    },
-    {
-      label: 'Fecha ultima regla',
-      children: getFormattedDate(embarazada?.fecha_ultima_regla),
-    },
-    {
-      label: 'Gestas',
-      children: embarazada?.gestas,
     },
     {
       label: 'PES',
@@ -111,29 +85,10 @@ const ModalVerDatos = ({ onOk, onCancel, open, embarazada }) => {
     },
   ];
 
-  const itemsParto = [
-    {
-      label: 'Fecha',
-      children: getFormattedDate(parto.fecha),
-    },
-    {
-      label: 'Hora',
-      children: getFormattedDate(parto.hora, 'hh:mm a'),
-    },
-    {
-      label: 'Peso',
-      children: parto.peso,
-    },
-    {
-      label: 'Num. de partos',
-      children: parto.numero_de_partos,
-    },
-  ];
-
   const itemsPosParto = [
     {
       label: 'Fecha de atencion',
-      children: getFormattedDate(posParto?.fecha_de_atencion),
+      children: getFormattedDate(posParto?.fecha),
     },
     {
       label: 'Nombres',
@@ -172,12 +127,6 @@ const ModalVerDatos = ({ onOk, onCancel, open, embarazada }) => {
         column={{ xs: 1, md: 1 }}
         bordered={true}
         items={items.map((item, i) => ({ key: i, ...item }))}
-      />
-      <Divider>Datos de parto</Divider>
-      <Descriptions
-        column={{ xs: 1, md: 2 }}
-        bordered={true}
-        items={itemsParto.map((item, i) => ({ key: i, ...item }))}
       />
       <Divider>Datos de Posparto</Divider>
       <Descriptions

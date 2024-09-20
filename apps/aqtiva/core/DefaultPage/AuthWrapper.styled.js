@@ -12,7 +12,7 @@ export const StyledAuthWrap = styled.div`
 `;
 
 export const StyledAuthCard = styled(Card)`
-  max-width: 900px;
+  max-width: 600px;
   min-height: 350px;
   width: 100%;
   overflow: hidden;
@@ -41,11 +41,11 @@ export const StyledAuthMainContent = styled.div`
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
     padding: 20px;
-    width: 50%;
+    width: 100%;
   }
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoints.lg}px) {
-    width: 40%;
+    width: 100%;
     padding: 40px;
   }
 `;

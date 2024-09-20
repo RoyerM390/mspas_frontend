@@ -14,7 +14,6 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { IoEyeOutline } from 'react-icons/io5';
 import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
 import dayjs from 'dayjs';
-import ModalRegistrarUltraSonido from './ModalRegistrarUltraSonido';
 import { FaBaby, FaRegEye } from 'react-icons/fa';
 import ModalVerUltraSonidos from './ModalVerUltraSonidos';
 import { PiBaby } from 'react-icons/pi';
@@ -53,6 +52,7 @@ const Registro = () => {
     if (diferencia >= 3 && diferencia <= 14) return 'orange';
     if (diferencia >= 15) return 'green';
   };
+
   const columns = [
     {
       key: 1,

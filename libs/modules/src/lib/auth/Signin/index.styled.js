@@ -1,6 +1,6 @@
-import { Button, Form } from "antd";
-import Link from "next/link";
-import styled from "styled-components";
+import { Button, Form } from 'antd';
+import Link from 'next/link';
+import styled from 'styled-components';
 
 export const StyledSign = styled.div`
   flex: 1;
@@ -15,19 +15,19 @@ export const StyledSignContent = styled.div`
 `;
 
 export const StyledSignBtn = styled(Button)`
-  border-radius: ${({theme}) => theme.sizes.borderRadius.base};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
   width: 10rem;
-  font-weight: ${({theme}) => theme.font.weight.regular};
-  font-size: ${({theme}) => theme.font.size.base};
+  font-weight: ${({ theme }) => theme.font.weight.regular};
+  font-size: ${({ theme }) => theme.font.size.base};
   text-transform: uppercase;
   line-height: 1;
 `;
 
 export const StyledSignBtnFull = styled(Button)`
-  border-radius: ${({theme}) => theme.sizes.borderRadius.base};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
   width: 10rem;
-  font-weight: ${({theme}) => theme.font.weight.regular};
-  font-size: ${({theme}) => theme.font.size.base};
+  font-weight: ${({ theme }) => theme.font.weight.regular};
+  font-size: ${({ theme }) => theme.font.size.base};
   text-transform: uppercase;
   line-height: 1;
   width: 100%;
@@ -48,8 +48,8 @@ export const StyledSignForm = styled(Form)`
   }
 
   & .form-field-action {
-    font-size: ${({theme}) => theme.font.size.base};
-    color: ${({theme}) => theme.palette.text.secondary};
+    font-size: ${({ theme }) => theme.font.size.base};
+    color: ${({ theme }) => theme.palette.text.secondary};
     margin-top: auto;
 
     & span {
@@ -73,8 +73,8 @@ export const StyledRememberMe = styled.div`
 `;
 
 export const StyledSignLink = styled.span`
-  color: ${({theme}) => theme.palette.primary.main};
-  font-size: ${({theme}) => theme.font.size.base};
+  color: ${({ theme }) => theme.palette.primary.main};
+  font-size: ${({ theme }) => theme.font.size.base};
   cursor: pointer;
   margin-bottom: 16px;
   text-align: right;
@@ -86,16 +86,16 @@ export const StyledSignLink = styled.span`
 `;
 
 export const StyledSignTextGrey = styled.span`
-  color: ${({theme}) => theme.palette.text.disabled};
+  color: ${({ theme }) => theme.palette.text.disabled};
 `;
 
 export const StyledSignLinkTag = styled(Link)`
   text-decoration: none;
-  color: ${({theme}) => theme.palette.primary.main}; ;
+  color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 export const StyledSignFooter = styled.div`
-  background-color: ${({theme}) => theme.palette.background.default};
+  background-color: ${({ theme }) => theme.palette.background.default};
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -103,7 +103,7 @@ export const StyledSignFooter = styled.div`
   padding: 10px 24px;
   margin: 12px -24px -24px;
 
-  @media screen and (min-width: ${({theme}) => theme.breakpoints.sm}px) {
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.sm}px) {
     padding-left: 20px;
     padding-right: 20px;
     margin-left: -20px;
@@ -111,7 +111,7 @@ export const StyledSignFooter = styled.div`
     margin-bottom: -20px;
   }
 
-  @media screen and (min-width: ${({theme}) => theme.breakpoints.lg}px) {
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.lg}px) {
     padding-left: 40px;
     padding-right: 40px;
     margin-left: -40px;
@@ -125,8 +125,8 @@ export const StyledSignFooter = styled.div`
 `;
 
 export const StyledSignedText = styled.span`
-  font-size: ${({theme}) => theme.font.size.base};
-  color: ${({theme}) => theme.palette.text.disabled};
+  font-size: ${({ theme }) => theme.font.size.base};
+  color: ${({ theme }) => theme.palette.text.disabled};
   margin-right: 10px;
 
   [dir='rtl'] & {
@@ -134,7 +134,7 @@ export const StyledSignedText = styled.span`
     margin-left: 10px;
   }
 
-  @media screen and (min-width: ${({theme}) => theme.breakpoints.md}px) {
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     margin-right: 16px;
 
     [dir='rtl'] & {
@@ -150,7 +150,7 @@ export const StyledSignSocialLink = styled.div`
 `;
 
 export const StyledSignIconBtn = styled(Button)`
-  color: ${({theme}) => theme.palette.text.secondary};
+  color: ${({ theme }) => theme.palette.text.secondary};
   padding: 6px 4px 4px;
   border: 0 none;
   box-shadow: none;
@@ -159,7 +159,7 @@ export const StyledSignIconBtn = styled(Button)`
   min-width: 26px;
   height: 26px;
 
-  @media screen and (min-width: ${({theme}) => theme.breakpoints.md}px) {
+  @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
     width: 36px;
     min-width: 36px;
     height: 36px;
@@ -168,15 +168,15 @@ export const StyledSignIconBtn = styled(Button)`
 
   &:hover,
   &:focus {
-    color: ${({theme}) => theme.palette.primary.main};
+    color: ${({ theme }) => theme.palette.primary.main};
     background-color: transparent;
   }
 
   & .anticon {
-    font-size: ${({theme}) => theme.font.size.base};
+    font-size: ${({ theme }) => theme.font.size.base};
 
-    @media screen and (min-width: ${({theme}) => theme.breakpoints.md}px) {
-      font-size: ${({theme}) => theme.font.size.lg};
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
+      font-size: ${({ theme }) => theme.font.size.lg};
     }
 
     & svg {
@@ -185,19 +185,19 @@ export const StyledSignIconBtn = styled(Button)`
   }
 
   &.ant-btn-icon-only > * {
-    font-size: ${({theme}) => theme.font.size.base};
+    font-size: ${({ theme }) => theme.font.size.base};
 
-    @media screen and (min-width: ${({theme}) => theme.breakpoints.md}px) {
-      font-size: ${({theme}) => theme.font.size.lg};
+    @media screen and (min-width: ${({ theme }) => theme.breakpoints.md}px) {
+      font-size: ${({ theme }) => theme.font.size.lg};
     }
   }
 `;
 
 export const SignInButton = styled(Button)`
-  border-radius: ${({theme}) => theme.sizes.borderRadius.base};
+  border-radius: ${({ theme }) => theme.sizes.borderRadius.base};
   width: 10rem;
-  font-size: ${({theme}) => theme.font.size.base};
-  font-weight: ${({theme}) => theme.font.weight.regular};
+  font-size: ${({ theme }) => theme.font.size.base};
+  font-weight: ${({ theme }) => theme.font.weight.regular};
   text-transform: uppercase;
   line-height: 1;
 `;

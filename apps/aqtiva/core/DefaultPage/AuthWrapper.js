@@ -35,12 +35,12 @@ const AuthWrapper = ({ children }) => {
                 </StyledAuthCardHeader>
                 {children}
               </StyledAuthMainContent>
-              <StyledAuthWellAction>
-                <StyledAuthWelContent>
-                  <AppImage src="/assets/images/mspas.webp" alt="crema-logo" />
-                  {/*<p>Te echamos la mano</p>*/}
-                </StyledAuthWelContent>
-              </StyledAuthWellAction>
+              {/*<StyledAuthWellAction>*/}
+              {/*  <StyledAuthWelContent>*/}
+              {/*    <AppImage src="/assets/images/mspas.webp" alt="crema-logo" />*/}
+              {/*    /!*<p>Te echamos la mano</p>*!/*/}
+              {/*  </StyledAuthWelContent>*/}
+              {/*</StyledAuthWellAction>*/}
             </StyledAuthCard>
           </StyledAuthWrap>
           {/*<AppInfoView />*/}
