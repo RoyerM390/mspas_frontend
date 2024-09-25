@@ -9,18 +9,26 @@ import { Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 import { MesEnum } from '@aqtiva/constants';
 import randomHexColor from 'random-hex-color';
 import AppCard from '@aqtiva/components/AppCard';
+import AppSelect from '@aqtiva/components/AppSelect';
 
 const ReporteEmbarazadas = () => {
   const dispatch = useDispatch();
   const [datos, setDatos] = useState();
   const { genericGet } = api('', dispatch, setDatos, datos);
   const [year, setYear] = useState(dayjs().get('year'));
+  const [filtro, setFiltro] = useState({
+    label: 'TODAS',
+    value: 'TODAS',
+  });
   const [totalesMeses, setTotalesMeses] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
   const color = randomHexColor();
 
   useEffect(() => {
-    genericGet('reportes/embarazadas/conteo', { year }).then((resp) => {
+    genericGet('reportes/embarazadas/conteo', {
+      year,
+      filtro: filtro.value,
+    }).then((resp) => {
       const final = resp.map((res, idx) => ({ index: idx + 1, ...res }));
       let object = {};
       for (let i = 0; i <= 11; i++) {
@@ -54,7 +62,7 @@ const ReporteEmbarazadas = () => {
       final.push({ index: 'Total', ...object });
       setDatos(final);
     });
-  }, [year]);
+  }, [year, filtro]);
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -166,13 +174,35 @@ const ReporteEmbarazadas = () => {
   return (
     <AppCard title="Estadisticas embarazadas" fullView>
       <AppRowContainer style={{ marginLeft: '1rem', marginTop: '1rem' }}>
-        <Col>
+        <Col xs={4}>
           <DatePicker.YearPicker
             defaultValue={dayjs().year(year)}
             onChange={(val) => {
-              console.log(val);
               setYear(val?.get('year'));
             }}
+          />
+        </Col>
+        <Col xs={4}>
+          <AppSelect
+            style={{ width: '100%' }}
+            menus={[
+              {
+                label: 'TODAS',
+                value: 'TODAS',
+              },
+              {
+                label: 'SOLO EMBARAZADAS',
+                value: 'SOLO_EMBARAZADAS',
+              },
+              {
+                label: 'SOLO POSPARTO',
+                value: 'SOLO_POSPARTO',
+              },
+            ]}
+            label={'label'}
+            valueKey={'value'}
+            defaultValue={filtro}
+            onChange={(_, opt) => setFiltro(opt)}
           />
         </Col>
       </AppRowContainer>
