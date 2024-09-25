@@ -8,12 +8,15 @@ import { Button, Form } from 'antd';
 import ModalRegistrarConsulta from './ModalRegistrarConsulta';
 import { getFormattedDate } from '@aqtiva/helpers';
 import { FaRegEye } from 'react-icons/fa';
+import ModalVerDatos from './ModalVerDatos';
 
 const ConsultasGenerales = () => {
   const dispatch = useDispatch();
   const { genericGet } = api('', dispatch);
   const [consultas, setConsultas] = useState([]);
+  const [modalVerDatos, setModalVerDatos] = useState(false);
   const [modalRegistrarConsulta, setModalRegistrarConsulta] = useState(false);
+  const [registro, setRegistro] = useState(null);
   useEffect(() => {
     genericGet('consultas-generales', {}, setConsultas);
   }, []);
@@ -71,12 +74,16 @@ const ConsultasGenerales = () => {
           },
           {
             title: 'Ver detalles',
-            render: () => (
+            render: (item) => (
               <Button
                 size={'small'}
                 type={'primary'}
                 ghost
                 icon={<FaRegEye />}
+                onClick={() => {
+                  setRegistro(item);
+                  setModalVerDatos(true);
+                }}
               />
             ),
           },
@@ -89,6 +96,12 @@ const ConsultasGenerales = () => {
           await genericGet('consultas-generales', {}, setConsultas);
           setModalRegistrarConsulta(false);
         }}
+      />
+      <ModalVerDatos
+        open={modalVerDatos}
+        registro={registro}
+        onOk={() => setModalVerDatos(false)}
+        onCancel={() => setModalVerDatos(false)}
       />
     </AppsContainer>
   );
