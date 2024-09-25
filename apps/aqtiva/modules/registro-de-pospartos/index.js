@@ -32,6 +32,10 @@ const RegistroDePosPartos = () => {
     get();
   }, []);
 
+  useEffect(() => {
+    genericGet('embarazadas/solo-posparto', { search }, setPosPartos);
+  }, [search]);
+
   const columns = [
     {
       key: 1,
@@ -112,7 +116,6 @@ const RegistroDePosPartos = () => {
             placeholder="Nombre o CUI"
             onSearch={(value) => {
               setSearch(value);
-              get(value);
             }}
           />
         </Col>
