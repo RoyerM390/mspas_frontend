@@ -13,12 +13,18 @@ import {
 } from 'react-icons/bs';
 import { MdDashboard, MdOutlinePregnantWoman } from 'react-icons/md';
 import {
-  FaAddressBook, FaBaby, FaBook,
-  FaCalculator, FaChartBar,
-  FaCross, FaMapMarked,
+  FaAddressBook,
+  FaBaby,
+  FaBook,
+  FaCalculator,
+  FaChartBar,
+  FaCross,
+  FaMapMarked,
+  FaMapMarkerAlt,
   FaRegMoneyBillAlt,
   FaRoute,
-  FaUsersCog
+  FaUserCog,
+  FaUsersCog,
 } from 'react-icons/fa';
 import {
   AiFillFolderAdd,
@@ -72,6 +78,7 @@ export const IconList = [
   { nombre: 'FaBook', Icon: FaBook },
   { nombre: 'FaChartBar', Icon: FaChartBar },
   { nombre: 'MdOutlinePregnantWoman', Icon: MdOutlinePregnantWoman },
-  { nombre: 'MdOutlinePregnantWoman', Icon: MdOutlinePregnantWoman },
+  { nombre: 'FaUserCog', Icon: FaUserCog },
   { nombre: 'FaMapMarked', Icon: FaMapMarked },
+  { nombre: 'FaMapMarkerAlt', Icon: FaMapMarkerAlt },
 ];

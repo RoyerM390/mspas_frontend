@@ -13,7 +13,7 @@ const AppTableContainer = (props) => {
       loading={loading}
       className={clsx({ hoverColor: hoverColor }, className)}
       columns={columns}
-      dataSource={data}
+      dataSource={data?.map((dat, i) => ({ ...dat, key: i }))}
       rowKey="id"
       pagination={pagination}
       {...rest}
