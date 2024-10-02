@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppsContainer from '@aqtiva/components/AppsContainer';
-import { Button, Col, Input, Tag } from 'antd';
+import { Button, Col, Input, Switch, Tag } from 'antd';
 import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
@@ -32,7 +32,8 @@ const Registro = () => {
   const [modalPosParto, setModalPosParto] = useState(false);
   const [modalParto, setModalParto] = useState(false);
   const [modalVerUltraSonidos, setModalVerUltraSonidos] = useState(false);
-  const { get } = api(
+  const [incluirConclusos, setIncluirConclusos] = useState(false);
+  const { genericGet } = api(
     'embarazadas',
     dispatch,
     setMujeresEmbarazadas,
@@ -40,8 +41,12 @@ const Registro = () => {
   );
   const [modalRegistro, setModalRegistro] = useState(false);
   useEffect(() => {
-    get();
+    getEmbarazadas({ search });
   }, []);
+
+  const getEmbarazadas = async (params = {}) => {
+    await genericGet('embarazadas', params, setMujeresEmbarazadas);
+  };
 
   const generarColorTag = (fecha) => {
     const diferencia = dayjs(fecha).diff(
@@ -60,6 +65,12 @@ const Registro = () => {
       dataIndex: 'cui',
     },
     {
+      key: 5,
+      title: 'Fecha de registro',
+      dataIndex: 'fecha_registro',
+      render: (fecha) => getFormattedDate(fecha),
+    },
+    {
       key: 2,
       title: 'Nombre',
       render: (item) => `${item.nombres} ${item.apellidos}`,
@@ -68,11 +79,6 @@ const Registro = () => {
       key: 3,
       title: 'Fecha de nacimiento',
       render: (item) => getFormattedDate(item.fecha_nacimiento),
-    },
-    {
-      key: 5,
-      title: 'Ocupación',
-      dataIndex: 'ocupacion',
     },
     {
       key: 6,
@@ -184,18 +190,31 @@ const Registro = () => {
             placeholder="Nombre o CUI"
             onSearch={(value) => {
               setSearch(value);
-              get(value);
+              getEmbarazadas({ search: value, incluirConclusos });
+            }}
+          />
+        </Col>
+        <Col>
+          <Switch
+            checkedChildren={'Incluir concluidas'}
+            onChange={(value) => {
+              setIncluirConclusos(value);
+              getEmbarazadas({ search, incluirConclusos: value });
             }}
           />
         </Col>
       </AppRowContainer>
-      <AppsPagination onChange={(page) => get(search, page)} />
-      <AppTableContainer columns={columns} data={mujeresEmbarazadas} />
+      <AppsPagination onChange={(page) => getEmbarazadas({ search, page })} />
+      <AppTableContainer
+        columns={columns}
+        data={mujeresEmbarazadas}
+        style={{ paddingBottom: '5rem' }}
+      />
       <ModalRegistrarMujeresEmbarazadas
         open={modalRegistro}
         onOk={async () => {
           setRegistro(null);
-          await get(search);
+          await getEmbarazadas({ search });
           setModalRegistro(false);
         }}
         onCancel={() => {
@@ -208,7 +227,7 @@ const Registro = () => {
       <ModalVerCitasPrenatales
         embarazada={registro}
         onOk={async () => {
-          await get(search);
+          await getEmbarazadas({ search });
           setModalVerVisitas(false);
         }}
         open={modalVerVisitas}
@@ -218,7 +237,7 @@ const Registro = () => {
         open={modalVerUltraSonidos}
         onCancel={() => setModalVerUltraSonidos(false)}
         onOk={async () => {
-          await get();
+          await getEmbarazadas();
           setModalVerUltraSonidos(false);
         }}
         embarazada={registro}
@@ -233,7 +252,7 @@ const Registro = () => {
         open={modalPosParto}
         embarazada={registro}
         onOk={async () => {
-          await get();
+          await getEmbarazadas();
           setModalPosParto(false);
         }}
         onCancel={() => setModalPosParto(false)}
@@ -242,7 +261,7 @@ const Registro = () => {
         embarazada={registro}
         open={modalParto}
         onOk={async () => {
-          await get();
+          await getEmbarazadas();
           setModalParto(false);
         }}
         onCancel={() => setModalParto(false)}

@@ -16,6 +16,7 @@ import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { cuiValido } from 'validador-dpi-nit';
 import dayjs from 'dayjs';
 import AppSelect from '@aqtiva/components/AppSelect';
+import { map } from 'lodash';
 
 const format = 'DD/MM/YYYY';
 const ModalRegistrarMujeresEmbarazadas = ({
@@ -227,22 +228,27 @@ const ModalRegistrarMujeresEmbarazadas = ({
         <AppRowContainer>
           <Col xs={8}>
             <Form.Item
-              label={'Centro de salud'}
+              label={'Centro comunitario'}
               name={'centro_de_salud_id'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <AppSelect
-                style={{ fontSize: '25px' }}
-                menus={centrosDeSalud}
-                label={'nombre'}
-                valueKey={'id'}
-                defaultValue={registro?.centros_de_salud || null}
+              <Select
+                options={map(centrosDeSalud, (value, key) => {
+                  return {
+                    label: <span>{key}</span>,
+                    title: key,
+                    options: map(value, (item) => ({
+                      label: <span>{item.nombre}</span>,
+                      value: item.id,
+                    })),
+                  };
+                })}
               />
             </Form.Item>
           </Col>
           <Col xs={8}>
             <Form.Item
-              label={'Sector'}
+              label={'Comunidad'}
               name={'sector_id'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
