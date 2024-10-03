@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AppsContainer from '@aqtiva/components/AppsContainer';
-import { Button, Col, Input, Switch, Tag } from 'antd';
-import { useDispatch } from 'react-redux';
+import { Button, Col, Input, Space, Switch, Tag } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import { getFormattedDate } from '@aqtiva/helpers';
@@ -14,7 +14,7 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { IoEyeOutline } from 'react-icons/io5';
 import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
 import dayjs from 'dayjs';
-import { FaBaby, FaRegEye } from 'react-icons/fa';
+import { FaBaby, FaFileDownload, FaRegEye } from 'react-icons/fa';
 import ModalVerUltraSonidos from './ModalVerUltraSonidos';
 import { PiBaby } from 'react-icons/pi';
 import { MdOutlineBabyChangingStation } from 'react-icons/md';
@@ -33,7 +33,7 @@ const Registro = () => {
   const [modalParto, setModalParto] = useState(false);
   const [modalVerUltraSonidos, setModalVerUltraSonidos] = useState(false);
   const [incluirConclusos, setIncluirConclusos] = useState(false);
-  const { genericGet } = api(
+  const { genericGet, getFile } = api(
     'embarazadas',
     dispatch,
     setMujeresEmbarazadas,
@@ -43,6 +43,7 @@ const Registro = () => {
   useEffect(() => {
     getEmbarazadas({ search });
   }, []);
+  const { loading } = useSelector(({ common }) => common);
 
   const getEmbarazadas = async (params = {}) => {
     await genericGet('embarazadas', params, setMujeresEmbarazadas);
@@ -174,14 +175,32 @@ const Registro = () => {
       title="Registro de mujeres embarazadas"
       fullView
       extra={[
-        <Button
-          key={1}
-          type="primary"
-          ghost
-          onClick={() => setModalRegistro(true)}
-        >
-          Registrar
-        </Button>,
+        <Space key={0}>
+          <Button
+            key={1}
+            type="primary"
+            ghost
+            onClick={() => setModalRegistro(true)}
+          >
+            Registrar
+          </Button>
+          <Button
+            key={2}
+            type="primary"
+            ghost
+            icon={<FaFileDownload />}
+            loading={loading}
+            onClick={async () => {
+              await getFile(
+                '/reportes/embarazadas-excel',
+                {},
+                'embarazadas.xlsx'
+              );
+            }}
+          >
+            Descargar
+          </Button>
+        </Space>,
       ]}
     >
       <AppRowContainer style={{ marginLeft: '1rem', marginTop: '1rem' }}>
