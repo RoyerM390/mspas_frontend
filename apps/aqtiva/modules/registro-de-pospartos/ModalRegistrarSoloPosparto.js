@@ -16,6 +16,7 @@ import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { cuiValido } from 'validador-dpi-nit';
 import AppSelect from '@aqtiva/components/AppSelect';
 import dayjs from 'dayjs';
+import { map } from 'lodash';
 
 const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
   const dispatch = useDispatch();
@@ -155,22 +156,22 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
             >
               <Input
                 autoComplete="off"
-                style={{ width: '100%', fontSize: '25px' }}
+                style={{ width: '100%', fontSize: '15px' }}
               />
             </Form.Item>
           </Col>
           <Col xs={8}>
             <Form.Item
-              style={{ fontSize: '25px' }}
+              style={{ fontSize: '15px' }}
               label={'Num. de casa'}
               name={'numero_de_casa'}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
             <Form.Item label={'Num. de expediente'} name={'numero_expediente'}>
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -181,7 +182,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               label="Nombres"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input autoComplete="off" style={{ fontSize: '25px' }} />
+              <Input autoComplete="off" style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -190,7 +191,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               label="Apellidos"
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <Input autoComplete="off" style={{ fontSize: '25px' }} />
+              <Input autoComplete="off" style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -201,7 +202,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
             >
               <DatePicker
                 format={format}
-                style={{ fontSize: '25px', width: '100%' }}
+                style={{ fontSize: '15px', width: '100%' }}
               />
             </Form.Item>
           </Col>
@@ -209,22 +210,27 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
         <AppRowContainer>
           <Col xs={8}>
             <Form.Item
-              label={'Centro de salud'}
+              label={'Centro comunitario'}
               name={'centro_de_salud_id'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <AppSelect
-                style={{ fontSize: '25px' }}
-                menus={centrosDeSalud}
-                label={'nombre'}
-                valueKey={'id'}
-                defaultValue={registro?.centros_de_salud || null}
+              <Select
+                options={map(centrosDeSalud, (value, key) => {
+                  return {
+                    label: <span>{key}</span>,
+                    title: key,
+                    options: map(value, (item) => ({
+                      label: <span>{item.nombre}</span>,
+                      value: item.id,
+                    })),
+                  };
+                })}
               />
             </Form.Item>
           </Col>
           <Col xs={8}>
             <Form.Item
-              label={'Sector'}
+              label={'Comunidad'}
               name={'sector_id'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
@@ -260,7 +266,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
             >
               <InputNumber
                 autoComplete="off"
-                style={{ width: '100%', fontSize: '25px' }}
+                style={{ width: '100%', fontSize: '15px' }}
               />
             </Form.Item>
           </Col>
@@ -270,7 +276,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name="ocupacion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input autoComplete="off" style={{ fontSize: '25px' }} />
+              <Input autoComplete="off" style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -279,7 +285,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name="direccion"
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input.TextArea style={{ fontSize: '25px' }} />
+              <Input.TextArea style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -291,7 +297,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'cesarea'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -300,7 +306,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'hm'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -309,7 +315,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'hv'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
@@ -318,7 +324,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'ab'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -329,12 +335,21 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'pes'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
-          <Col xs={18}>
+          <Col xs={6}>
+            <Form.Item
+              label={'GESTAS'}
+              name={'gestas'}
+              rules={[{ required: true, message: 'Campo requerido' }]}
+            >
+              <Input style={{ fontSize: '15px' }} />
+            </Form.Item>
+          </Col>
+          <Col xs={12}>
             <Form.Item label="Observaciones" name="observaciones">
-              <Input.TextArea style={{ fontSize: '25px' }} />
+              <Input.TextArea style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -346,7 +361,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'nombre_de_recien_nacido'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={12}>
@@ -355,7 +370,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'apellidos_de_recien_nacido'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -375,7 +390,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'estado_de_salud'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
@@ -384,7 +399,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
               name={'descripcion'}
               rules={[{ required: true, message: 'Campo requerido' }]}
             >
-              <Input style={{ fontSize: '25px' }} />
+              <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
@@ -432,7 +447,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
                         >
                           <Input
                             autoComplete="off"
-                            style={{ fontSize: '25px' }}
+                            style={{ fontSize: '15px' }}
                           />
                         </Form.Item>
                       </Col>
@@ -446,7 +461,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
                         >
                           <Input
                             autoComplete="off"
-                            style={{ fontSize: '25px' }}
+                            style={{ fontSize: '15px' }}
                           />
                         </Form.Item>
                       </Col>
@@ -460,7 +475,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
                         >
                           <Input
                             autoComplete="off"
-                            style={{ fontSize: '25px' }}
+                            style={{ fontSize: '15px' }}
                           />
                         </Form.Item>
                       </Col>
@@ -476,7 +491,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
                         >
                           <InputNumber
                             autoComplete="off"
-                            style={{ fontSize: '25px', width: '100%' }}
+                            style={{ fontSize: '15px', width: '100%' }}
                           />
                         </Form.Item>
                       </Col>
@@ -488,7 +503,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
                             { required: true, message: 'Campo requerido' },
                           ]}
                         >
-                          <Input.TextArea style={{ fontSize: '25px' }} />
+                          <Input.TextArea style={{ fontSize: '15px' }} />
                         </Form.Item>
                       </Col>
                     </AppRowContainer>

@@ -1,19 +1,41 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, DatePicker, Form, Input, Modal } from 'antd';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { api } from '@aqtiva/helpers/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
-const ModalRegistrarUltraSonido = ({ open, onOk, onCancel, embarazada }) => {
+const ModalRegistrarUltraSonido = ({
+  open,
+  onOk,
+  onCancel,
+  embarazada,
+  ultrasonido,
+}) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const { loading } = useSelector(({ common }) => common);
   const { genericPost } = api('', dispatch);
+  useEffect(() => {
+    if (ultrasonido && Object.keys(ultrasonido).length > 0) {
+      form.setFieldsValue({ ...ultrasonido, fecha: dayjs(ultrasonido.fecha) });
+    }
+  }, [ultrasonido]);
+
   return (
     <Modal
+      loading={loading}
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost(`ultra-sonidos/${embarazada?.id}`, values);
+          if (ultrasonido && Object.keys(ultrasonido).length > 0) {
+            await genericPost(
+              `ultra-sonidos/editar/${ultrasonido?.id}`,
+              values
+            );
+          } else {
+            await genericPost(`ultra-sonidos/${embarazada?.id}`, values);
+          }
           await onOk();
           form.resetFields();
         } catch (e) {

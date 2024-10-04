@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Descriptions, Modal, Tag } from 'antd';
+import { Button, Descriptions, Modal, Space, Tag } from 'antd';
 import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import { getFormattedDate } from '@aqtiva/helpers';
 import dayjs from 'dayjs';
 import { IoEyeOutline } from 'react-icons/io5';
-import AppsContainer from '@aqtiva/components/AppsContainer';
 import AppCard from '@aqtiva/components/AppCard';
 import ModalRegistrarCitaPrenatal from './ModalRegistrarCitaPrenatal';
+import { CiEdit } from 'react-icons/ci';
 
 const ModalVerCitasPrenatales = ({ open, onOk, onCancel, embarazada }) => {
   const dispatch = useDispatch();
   const [citasPrenatales, setCitasPrenatales] = useState([]);
   const { genericGet } = api('citas-prenatales', dispatch);
   const [modalRegistrarCita, setModalRegistrarCita] = useState(false);
+  const [cita, setCita] = useState({});
   const get = async () => {
     genericGet(`citas-prenatales/${embarazada?.id}`, {}, setCitasPrenatales);
   };
@@ -30,6 +31,10 @@ const ModalVerCitasPrenatales = ({ open, onOk, onCancel, embarazada }) => {
         label: 'Riesgos detectados',
         children: item.riesgos_detectados,
         span: 3,
+      },
+      {
+        label: 'Num. de control',
+        children: item.control,
       },
       {
         label: 'Meses',
@@ -132,21 +137,36 @@ const ModalVerCitasPrenatales = ({ open, onOk, onCancel, embarazada }) => {
             {
               title: 'Acciones',
               render: (item) => (
-                <Button
-                  icon={<IoEyeOutline />}
-                  ghost
-                  type={'primary'}
-                  size="small"
-                  onClick={() => verDetalles(item)}
-                >
-                  Ver detalles
-                </Button>
+                <Space>
+                  <Button
+                    icon={<IoEyeOutline />}
+                    ghost
+                    type={'primary'}
+                    size="small"
+                    onClick={() => verDetalles(item)}
+                  >
+                    Ver detalles
+                  </Button>
+                  <Button
+                    icon={<CiEdit />}
+                    ghost
+                    type={'primary'}
+                    size="small"
+                    onClick={() => {
+                      setCita(item);
+                      setModalRegistrarCita(true);
+                    }}
+                  >
+                    Editar
+                  </Button>
+                </Space>
               ),
             },
           ]}
         />
       </AppCard>
       <ModalRegistrarCitaPrenatal
+        cita={cita}
         embarazada={embarazada}
         onOk={async () => {
           await get();

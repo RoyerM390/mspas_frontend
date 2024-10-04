@@ -8,11 +8,8 @@ import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import { api } from '@aqtiva/helpers/api';
 import { getFormattedDate } from '@aqtiva/helpers';
 import AppMenu from '@aqtiva/components/AppMenu';
-import { FaBaby, FaRegEye } from 'react-icons/fa';
+import { FaRegEye } from 'react-icons/fa';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { IoEyeOutline } from 'react-icons/io5';
-import { MdOutlineBabyChangingStation } from 'react-icons/md';
-import { PiBaby } from 'react-icons/pi';
 import ModalRegistrarSoloPosparto from './ModalRegistrarSoloPosparto';
 import ModalVerDatos from './ModalVerDatos';
 
@@ -54,8 +51,9 @@ const RegistroDePosPartos = () => {
     },
     {
       key: 5,
-      title: 'Ocupación',
-      dataIndex: 'ocupacion',
+      title: 'Fecha de atencion',
+      dataIndex: 'fecha_registro',
+      render: (fecha) => getFormattedDate(fecha),
     },
     {
       key: 6,

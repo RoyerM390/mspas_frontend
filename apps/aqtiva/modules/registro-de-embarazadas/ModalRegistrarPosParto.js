@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DatePicker, Form, Input, Modal } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
+import dayjs from 'dayjs';
 
-const ModalRegistrarPosParto = ({ onOk, onCancel, open, embarazada }) => {
+const ModalRegistrarPosParto = ({
+  onOk,
+  onCancel,
+  open,
+  embarazada,
+  posparto,
+}) => {
   const dispatch = useDispatch();
   const { genericPost } = api('', dispatch);
   const { loading } = useSelector(({ common }) => common);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (posparto && Object.keys(posparto).length > 0) {
+      form.setFieldsValue({
+        ...posparto,
+        fecha_de_atencion: dayjs(posparto.fecha_de_atencion),
+        fecha_de_nacimiento: dayjs(posparto.fecha_de_nacimiento),
+      });
+    }
+  }, [posparto]);
+
   return (
     <Modal
       title={'Registro de posparto'}
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost(
-            `embarazadas/registrar-posparto/${embarazada?.id}`,
-            values
-          );
+          if (posparto && Object.keys(posparto).length > 0) {
+            await genericPost(
+              `embarazadas/registrar-posparto/${embarazada?.id}`,
+              values
+            );
+          } else {
+            await genericPost(
+              `embarazadas/editar-posparto/${posparto?.id}`,
+              values
+            );
+          }
           onOk();
           form.resetFields();
         } catch (e) {

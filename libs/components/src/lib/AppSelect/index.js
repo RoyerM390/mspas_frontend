@@ -112,17 +112,19 @@ const AppSelect = ({
       {/*    </StyledOption>*/}
       {/*  ))*/}
       {/*)}*/}
-      {menus.map((menu, index) => (
-        <StyledOption
-          key={index}
-          label={get(menu, label) || label}
-          value={menu[valueKey]}
-        >
-          {`${get(menu, label) || label} ${
-            concatLabel ? getContacLabel(menu) : ''
-          }`}
-        </StyledOption>
-      ))}
+      {menus &&
+        Array.isArray(menus) &&
+        menus?.map((menu, index) => (
+          <StyledOption
+            key={index}
+            label={get(menu, label) || label}
+            value={menu[valueKey]}
+          >
+            {`${get(menu, label) || label} ${
+              concatLabel ? getContacLabel(menu) : ''
+            }`}
+          </StyledOption>
+        ))}
     </StyledAppSelect>
   );
 };

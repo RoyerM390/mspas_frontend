@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Space } from 'antd';
 import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppCard from '@aqtiva/components/AppCard';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import { getFormattedDate } from '@aqtiva/helpers';
 import ModalRegistrarUltraSonido from './ModalRegistrarUltraSonido';
+import ModalVerUltraSonido from './ModalVerDetalleUltraSonido';
+import { CiEdit } from 'react-icons/ci';
 
 const ModalVerUltraSonidos = ({ open, onOk, onCancel, embarazada }) => {
   const dispatch = useDispatch();
@@ -13,6 +15,8 @@ const ModalVerUltraSonidos = ({ open, onOk, onCancel, embarazada }) => {
   const { genericGet } = api('', dispatch);
   const [modalRegistrarUltraSonido, setModalRegistrarUltraSonido] =
     useState(false);
+  const [modalVerUltraSonido, setModalVerUltraSonido] = useState(false);
+  const [ultraSonido, setUltraSonido] = useState({});
 
   const getUltraSonidos = async () => {
     genericGet(`ultra-sonidos/${embarazada?.id}`, {}, setUltraSonidos);
@@ -56,15 +60,38 @@ const ModalVerUltraSonidos = ({ open, onOk, onCancel, embarazada }) => {
               key: 3,
               title: 'Acciones',
               render: (item) => (
-                <Button size={'small'} type={'primary'} ghost>
-                  Ver detalles
-                </Button>
+                <Space>
+                  <Button
+                    size={'small'}
+                    type={'primary'}
+                    ghost
+                    onClick={() => {
+                      setUltraSonido(item);
+                      setModalVerUltraSonido(true);
+                    }}
+                  >
+                    Ver detalles
+                  </Button>
+                  <Button
+                    size={'small'}
+                    type={'primary'}
+                    ghost
+                    icon={<CiEdit />}
+                    onClick={() => {
+                      setUltraSonido(item);
+                      setModalRegistrarUltraSonido(true);
+                    }}
+                  >
+                    Editar
+                  </Button>
+                </Space>
               ),
             },
           ]}
         />
       </AppCard>
       <ModalRegistrarUltraSonido
+        ultrasonido={ultraSonido}
         embarazada={embarazada}
         onOk={async () => {
           await getUltraSonidos();
@@ -72,6 +99,12 @@ const ModalVerUltraSonidos = ({ open, onOk, onCancel, embarazada }) => {
         }}
         open={modalRegistrarUltraSonido}
         onCancel={() => setModalRegistrarUltraSonido(false)}
+      />
+      <ModalVerUltraSonido
+        open={modalVerUltraSonido}
+        onCancel={() => setModalVerUltraSonido(false)}
+        onOk={() => setModalVerUltraSonido(false)}
+        ultrasonido={ultraSonido}
       />
     </Modal>
   );

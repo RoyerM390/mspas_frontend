@@ -8,15 +8,21 @@ import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import AppsPagination from '@aqtiva/components/AppsPagination';
 import AppMenu from '@aqtiva/components/AppMenu';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { FaUserAltSlash, FaUserCheck } from 'react-icons/fa';
 
 const RegistroDeUsuarios = () => {
   const dispatch = useDispatch();
   const [usuarios, setUsuarios] = useState([]);
+  const [usuario, setUsuario] = useState({});
   const [modalRegistrarUsuario, setModalRegistrarUsuario] = useState(false);
-  const { genericGet } = api('', dispatch);
+  const { genericGet, genericPost } = api('', dispatch);
   useEffect(() => {
     genericGet('auth', {}, setUsuarios);
   }, []);
+
+  const actualizarEstado = async (usuarioId, estado) => {
+    await genericPost(`usuarios/editar-estado/${usuarioId}`, { estado });
+  };
 
   return (
     <AppsContainer
@@ -70,16 +76,33 @@ const RegistroDeUsuarios = () => {
           {
             key: 5,
             title: 'Acciones',
-            render: () => (
+            render: (item) => (
               <AppMenu
                 options={[
                   {
                     label: 'Modificar',
                     icon: <AiOutlineEdit />,
+                    onClick: () => {
+                      setUsuario(item);
+                      setModalRegistrarUsuario(true);
+                    },
                   },
                   {
-                    label: 'Desactivar',
-                    icon: <AiOutlineEdit />,
+                    label:
+                      item.estados_usuario_id === 1 ? 'Desactivar' : 'Activar',
+                    icon:
+                      item.estados_usuario_id === 1 ? (
+                        <FaUserAltSlash />
+                      ) : (
+                        <FaUserCheck />
+                      ),
+                    onClick: async () => {
+                      await actualizarEstado(
+                        item.id,
+                        item.estados_usuario_id === 1 ? 2 : 1
+                      );
+                      await genericGet('auth', {}, setUsuarios);
+                    },
                   },
                 ]}
               />
@@ -89,6 +112,7 @@ const RegistroDeUsuarios = () => {
         data={usuarios}
       />
       <ModalRegistrarUsuario
+        registro={usuario}
         open={modalRegistrarUsuario}
         onCancel={() => setModalRegistrarUsuario(false)}
         onOk={async () => {

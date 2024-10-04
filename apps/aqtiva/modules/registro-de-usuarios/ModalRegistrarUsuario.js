@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Form, Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
@@ -8,6 +8,12 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const { genericPost } = api('', dispatch);
+
+  useEffect(() => {
+    if (registro) {
+      form.setFieldsValue({ ...registro });
+    }
+  }, [registro]);
 
   return (
     <Modal
@@ -58,12 +64,9 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'Usuario'}
-              name={'nickname'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Usuario'} name={'nickname'}>
               <Input
+                disabled={registro && Object.keys(registro).length > 0}
                 onInput={(e) =>
                   (e.target.value = e.target.value
                     .toUpperCase()
@@ -73,11 +76,7 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'password'}
-              name={'password'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'password'} name={'password'}>
               <Input />
             </Form.Item>
           </Col>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppsContainer from '@aqtiva/components/AppsContainer';
-import { Button, Col, Input, Space, Switch, Tag } from 'antd';
+import { Button, Col, Input, Modal, Space, Switch, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
@@ -14,13 +14,19 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { IoEyeOutline } from 'react-icons/io5';
 import ModalVerCitasPrenatales from './ModalVerCitasPrenatales';
 import dayjs from 'dayjs';
-import { FaBaby, FaFileDownload, FaRegEye } from 'react-icons/fa';
+import {
+  FaBaby,
+  FaCheckDouble,
+  FaFileDownload,
+  FaRegEye,
+} from 'react-icons/fa';
 import ModalVerUltraSonidos from './ModalVerUltraSonidos';
 import { PiBaby } from 'react-icons/pi';
 import { MdOutlineBabyChangingStation } from 'react-icons/md';
 import ModalVerDatos from './ModalVerDatos';
 import ModalRegistrarPosParto from './ModalRegistrarPosParto';
 import ModalRegistrarParto from './ModalRegistrarParto';
+import { CiEdit } from 'react-icons/ci';
 
 const Registro = () => {
   const dispatch = useDispatch();
@@ -32,8 +38,10 @@ const Registro = () => {
   const [modalPosParto, setModalPosParto] = useState(false);
   const [modalParto, setModalParto] = useState(false);
   const [modalVerUltraSonidos, setModalVerUltraSonidos] = useState(false);
+  const [parto, setParto] = useState({});
+  const [posParto, setPosParto] = useState({});
   const [incluirConclusos, setIncluirConclusos] = useState(false);
-  const { genericGet, getFile } = api(
+  const { genericGet, getFile, genericPost } = api(
     'embarazadas',
     dispatch,
     setMujeresEmbarazadas,
@@ -147,21 +155,32 @@ const Registro = () => {
               },
             },
             {
-              label: 'Registrar parto',
+              label: item.parto_id ? 'Editar parto' : 'Registrar parto',
               icon: <MdOutlineBabyChangingStation />,
-              disabled: !!item.parto_id,
               onClick: () => {
+                setParto(item.partos);
                 setRegistro(item);
                 setModalParto(true);
               },
             },
             {
-              label: 'Registrar posparto',
+              label: item.posparto_id
+                ? 'Editar posparto'
+                : 'Registrar posparto',
               icon: <PiBaby />,
-              disabled: !!item.posparto_id,
               onClick: () => {
+                setPosParto(item.pos_partos);
                 setRegistro(item);
                 setModalPosParto(true);
+              },
+            },
+            {
+              label: item.visitas_concluidas
+                ? 'Habilitar visitas'
+                : 'Concluir visitas',
+              icon: <FaCheckDouble />,
+              onClick: async () => {
+                await modalConcluirVisitas(item.id, item.visitas_concluidas);
               },
             },
           ]}
@@ -169,6 +188,32 @@ const Registro = () => {
       ),
     },
   ];
+
+  const modalConcluirVisitas = async (id, valorActual) => {
+    if (!valorActual) {
+      Modal.confirm({
+        title: '¿Concluir visitas?',
+        content: 'Se registrará como visitas concluidas',
+        onOk: async () => {
+          await genericPost(`embarazadas/registrar-como-concluida/${id}`, {
+            concluida: !valorActual,
+          });
+          await getEmbarazadas({ incluirConclusos });
+        },
+      });
+    } else {
+      Modal.confirm({
+        title: '¿Habilitar nuevamente?',
+        content: 'Se registrará como visitas NO concluidas',
+        onOk: async () => {
+          await genericPost(`embarazadas/registrar-como-concluida/${id}`, {
+            concluida: !valorActual,
+          });
+          await getEmbarazadas({ incluirConclusos });
+        },
+      });
+    }
+  };
 
   return (
     <AppsContainer
@@ -268,6 +313,7 @@ const Registro = () => {
         onCancel={() => setModalVerDatos(false)}
       />
       <ModalRegistrarPosParto
+        posparto={posParto}
         open={modalPosParto}
         embarazada={registro}
         onOk={async () => {
@@ -277,6 +323,7 @@ const Registro = () => {
         onCancel={() => setModalPosParto(false)}
       />
       <ModalRegistrarParto
+        parto={parto}
         embarazada={registro}
         open={modalParto}
         onOk={async () => {

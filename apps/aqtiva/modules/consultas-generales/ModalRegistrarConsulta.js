@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Col, DatePicker, Form, Input, Modal, Radio } from 'antd';
+import { Col, DatePicker, Form, Input, Modal, Radio, Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { cuiValido } from 'validador-dpi-nit';
 import AppSelect from '@aqtiva/components/AppSelect';
+import { map } from 'lodash';
+import dayjs from 'dayjs';
 
 const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
   const { loading } = useSelector(({ common }) => common);
@@ -21,6 +23,7 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
     consultas
   );
   const centroDeSalud = Form.useWatch('centro_de_salud_id', form);
+  const migrante = Form.useWatch('migrante', form);
 
   useEffect(() => {
     genericGet('centros-de-salud', {}, setCentrosDeSalud);
@@ -28,7 +31,17 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
   }, []);
 
   useEffect(() => {
-    form.resetFields(['sector_id']);
+    if (registro) {
+      form.setFieldsValue({
+        ...registro,
+        pueblo: registro.pueblo_id,
+        fecha_nacimiento: dayjs(registro.fecha_nacimiento),
+      });
+    }
+  }, [registro]);
+
+  useEffect(() => {
+    //form.resetFields(['sector_id']);
     if (centroDeSalud) {
       genericGet(
         `centros-de-salud/sectores/${centroDeSalud}`,
@@ -47,7 +60,11 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost('consultas-generales', values);
+          if (registro && Object.keys(registro).length > 0) {
+            await genericPost(`consultas-generales/${registro?.id}`, values);
+          } else {
+            await genericPost('consultas-generales', values);
+          }
           onOk();
           form.resetFields();
         } catch (e) {
@@ -112,22 +129,27 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
           </Col>
           <Col xs={8}>
             <Form.Item
-              label={'Centro de salud'}
+              label={'Centro comunitario'}
               name={'centro_de_salud_id'}
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
-              <AppSelect
-                style={{ fontSize: '25px' }}
-                menus={centrosDeSalud}
-                label={'nombre'}
-                valueKey={'id'}
-                defaultValue={registro?.centros_de_salud || null}
+              <Select
+                options={map(centrosDeSalud, (value, key) => {
+                  return {
+                    label: <span>{key}</span>,
+                    title: key,
+                    options: map(value, (item) => ({
+                      label: <span>{item.nombre}</span>,
+                      value: item.id,
+                    })),
+                  };
+                })}
               />
             </Form.Item>
           </Col>
           <Col xs={8}>
             <Form.Item
-              label={'Sector'}
+              label={'Comunidad'}
               name={'sector_id'}
               rules={[{ required: true, message: 'Campo obligatorio' }]}
             >
@@ -197,7 +219,7 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
               <Input.TextArea />
             </Form.Item>
           </Col>
-          <Col xs={8}>
+          <Col xs={5}>
             <Form.Item
               label={'Migrante'}
               name={'migrante'}
@@ -209,6 +231,17 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
               </Radio.Group>
             </Form.Item>
           </Col>
+          {migrante && (
+            <Col xs={11}>
+              <Form.Item
+                label={'Lugar'}
+                name={'lugar_migrante'}
+                rules={[{ required: migrante, message: 'Campo requerido' }]}
+              >
+                <Input.TextArea />
+              </Form.Item>
+            </Col>
+          )}
         </AppRowContainer>
       </Form>
     </Modal>

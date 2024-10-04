@@ -4,11 +4,12 @@ import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 import AppsPagination from '@aqtiva/components/AppsPagination';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
-import { Button, Form } from 'antd';
+import { Button, Form, Space } from 'antd';
 import ModalRegistrarConsulta from './ModalRegistrarConsulta';
 import { getFormattedDate } from '@aqtiva/helpers';
 import { FaRegEye } from 'react-icons/fa';
 import ModalVerDatos from './ModalVerDatos';
+import { CiEdit } from 'react-icons/ci';
 
 const ConsultasGenerales = () => {
   const dispatch = useDispatch();
@@ -75,21 +76,34 @@ const ConsultasGenerales = () => {
           {
             title: 'Ver detalles',
             render: (item) => (
-              <Button
-                size={'small'}
-                type={'primary'}
-                ghost
-                icon={<FaRegEye />}
-                onClick={() => {
-                  setRegistro(item);
-                  setModalVerDatos(true);
-                }}
-              />
+              <Space>
+                <Button
+                  size={'small'}
+                  type={'primary'}
+                  ghost
+                  icon={<FaRegEye />}
+                  onClick={() => {
+                    setRegistro(item);
+                    setModalVerDatos(true);
+                  }}
+                />
+                <Button
+                  size={'small'}
+                  type={'primary'}
+                  ghost
+                  icon={<CiEdit />}
+                  onClick={() => {
+                    setRegistro(item);
+                    setModalRegistrarConsulta(true);
+                  }}
+                />
+              </Space>
             ),
           },
         ]}
       />
       <ModalRegistrarConsulta
+        registro={registro}
         open={modalRegistrarConsulta}
         onCancel={() => setModalRegistrarConsulta(false)}
         onOk={async () => {

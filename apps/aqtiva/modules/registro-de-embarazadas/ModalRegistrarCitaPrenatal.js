@@ -1,15 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { Col, DatePicker, Form, Input, Modal, Select, TimePicker } from 'antd';
+import {
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Select,
+  TimePicker,
+} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
 const dateFormat = 'DD/MM/YYYY';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
+import dayjs from 'dayjs';
 
-const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
+const ModalRegistrarCitaPrenatal = ({
+  open,
+  onOk,
+  onCancel,
+  embarazada,
+  cita,
+}) => {
   const { loading } = useSelector(({ common }) => common);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { create, genericPost } = api('citas-embarazadas', dispatch);
+
+  useEffect(() => {
+    if (cita && Object.keys(cita).length > 0) {
+      form.setFieldsValue({
+        ...cita,
+        fecha_proxima_cita: dayjs(cita.fecha_proxima_cita),
+      });
+    }
+  }, [cita]);
 
   return (
     <Modal
@@ -26,12 +51,17 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
             .utc(true)
             .startOf('date')
             .toISOString();
-          console.log('values antes de enviar', values);
-          console.log('fecha antes de enviar', fecha);
-          await genericPost(`citas-prenatales/${embarazada?.id}`, {
-            ...values,
-            fecha_proxima_cita: fecha,
-          });
+          if (cita && Object.keys(cita).length > 0) {
+            await genericPost(`citas-prenatales/editar/${cita?.id}`, {
+              ...values,
+              fecha_proxima_cita: fecha,
+            });
+          } else {
+            await genericPost(`citas-prenatales/${embarazada?.id}`, {
+              ...values,
+              fecha_proxima_cita: fecha,
+            });
+          }
           onOk();
           form.resetFields();
         } catch (e) {
@@ -60,6 +90,15 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
           <Col xs={6}>
             <Form.Item
               rules={[{ required: true, message: 'Campo requerido' }]}
+              name={'control'}
+              label={'Num. de control'}
+            >
+              <InputNumber autoComplete={'off'} />
+            </Form.Item>
+          </Col>
+          <Col xs={6}>
+            <Form.Item
+              rules={[{ required: true, message: 'Campo requerido' }]}
               name={'meses'}
               label={'Meses'}
             >
@@ -84,6 +123,8 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
+        </AppRowContainer>
+        <AppRowContainer>
           <Col xs={6}>
             <Form.Item
               rules={[{ required: true, message: 'Campo requerido' }]}
@@ -93,8 +134,6 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
-        </AppRowContainer>
-        <AppRowContainer>
           <Col xs={6}>
             <Form.Item
               rules={[{ required: true, message: 'Campo requerido' }]}
@@ -122,6 +161,8 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
+        </AppRowContainer>
+        <AppRowContainer>
           <Col xs={6}>
             <Form.Item
               rules={[{ required: true, message: 'Campo requerido' }]}
@@ -131,8 +172,6 @@ const ModalRegistrarCitaPrenatal = ({ open, onOk, onCancel, embarazada }) => {
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
-        </AppRowContainer>
-        <AppRowContainer>
           <Col xs={6}>
             <Form.Item
               rules={[{ required: true, message: 'Campo requerido' }]}
