@@ -184,6 +184,7 @@ const ReporteEmbarazadas = () => {
         </Col>
         <Col xs={4}>
           <AppSelect
+            allowClear={false}
             style={{ width: '100%' }}
             menus={[
               {

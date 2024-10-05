@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppsContainer from '@aqtiva/components/AppsContainer';
-import { Button, Col, DatePicker, Input, Tag } from 'antd';
+import { Button, Col, DatePicker, Input, Space, Tag } from 'antd';
 import AppTableContainer from '@aqtiva/components/AppTableContainer';
 import { useDispatch } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
@@ -9,12 +9,14 @@ import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import ModalRegistrarVisita from './ModalRegistrarVisita';
 import { getFormattedDate } from '@aqtiva/helpers';
 import dayjs from 'dayjs';
+import { CiEdit } from 'react-icons/ci';
 
 const RegistroDeVisitasDomiciliares = () => {
   const dispatch = useDispatch();
   const { genericGet } = api('', dispatch);
   const [visitas, setVisitas] = useState([]);
   const [search, setSearch] = useState('');
+  const [registro, setRegistro] = useState(null);
   const [modalRegistrarVisita, setModalRegistrarVisita] = useState(false);
   const get = async (search = '', fechaInicio = null, fechaFin = null) => {
     await genericGet(
@@ -118,9 +120,26 @@ const RegistroDeVisitasDomiciliares = () => {
                 </Tag>
               )),
           },
+          {
+            title: 'Acciones',
+            render: (item) => (
+              <Space>
+                <Button
+                  ghost
+                  type={'primary'}
+                  icon={<CiEdit />}
+                  onClick={() => {
+                    setRegistro(item);
+                    setModalRegistrarVisita(true);
+                  }}
+                />
+              </Space>
+            ),
+          },
         ]}
       />
       <ModalRegistrarVisita
+        registro={registro}
         open={modalRegistrarVisita}
         onCancel={() => setModalRegistrarVisita(false)}
         onOk={async () => {

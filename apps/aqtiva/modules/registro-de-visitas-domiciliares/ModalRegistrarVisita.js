@@ -3,8 +3,9 @@ import { Col, DatePicker, Form, Input, Modal, Select } from 'antd';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '@aqtiva/helpers/api';
+import dayjs from 'dayjs';
 
-const ModalRegistrarVisita = ({ open, onOk, onCancel }) => {
+const ModalRegistrarVisita = ({ open, onOk, onCancel, registro }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { loading } = useSelector(({ common }) => common);
@@ -19,6 +20,16 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel }) => {
     getUsuarios();
   }, []);
 
+  useEffect(() => {
+    if (registro) {
+      form.setFieldsValue({
+        ...registro,
+        fecha_de_visita: dayjs(registro.fecha_de_visita).utc(false),
+        usuarios: registro.visitas_encargados.map((ve) => ve.usuarios_id),
+      });
+    }
+  }, [registro]);
+
   return (
     <Modal
       title={'Registrar visita'}
@@ -26,7 +37,13 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel }) => {
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost('visitas-domiciliares', { ...values });
+          if (registro && Object.keys(registro).length > 0) {
+            await genericPost(`visitas-domiciliares/editar/${registro.id}`, {
+              ...values,
+            });
+          } else {
+            await genericPost('visitas-domiciliares', { ...values });
+          }
           form.resetFields();
           await onOk();
         } catch (e) {
@@ -89,7 +106,7 @@ const ModalRegistrarVisita = ({ open, onOk, onCancel }) => {
                 mode="multiple"
                 options={usuarios.map((usuario) => ({
                   value: usuario.id,
-                  label: usuario.nickname,
+                  label: `${usuario.nombres} ${usuario.apellidos}`,
                 }))}
                 onChange={(value) => setUsuariosSeleccionados(value)}
               />
