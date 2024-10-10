@@ -105,9 +105,13 @@ const ConsultasGenerales = () => {
       <ModalRegistrarConsulta
         registro={registro}
         open={modalRegistrarConsulta}
-        onCancel={() => setModalRegistrarConsulta(false)}
+        onCancel={() => {
+          setModalRegistrarConsulta(false);
+          setRegistro(null);
+        }}
         onOk={async () => {
           await genericGet('consultas-generales', {}, setConsultas);
+          setRegistro(null);
           setModalRegistrarConsulta(false);
         }}
       />

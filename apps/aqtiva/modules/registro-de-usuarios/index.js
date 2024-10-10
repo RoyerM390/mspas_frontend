@@ -116,7 +116,7 @@ const RegistroDeUsuarios = () => {
         open={modalRegistrarUsuario}
         onCancel={() => setModalRegistrarUsuario(false)}
         onOk={async () => {
-          await genericGet('auth');
+          await genericGet('auth', {}, setUsuarios);
           setModalRegistrarUsuario(false);
         }}
       />

@@ -21,14 +21,21 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          await genericPost('auth/create', values);
+          if (registro && Object.keys(registro).length > 0) {
+            await genericPost(`usuarios/editar-usuario/${registro.id}`, values);
+          } else {
+            await genericPost('auth/create', values);
+          }
           onOk();
           form.resetFields();
         } catch (e) {
           return Promise.reject(e);
         }
       }}
-      onCancel={onCancel}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
       width={'80vw'}
       title={registro ? 'Editar usuario' : 'Registrar usuario'}
     >
@@ -66,7 +73,11 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
           <Col xs={8}>
             <Form.Item label={'Usuario'} name={'nickname'}>
               <Input
-                disabled={registro && Object.keys(registro).length > 0}
+                disabled={
+                  registro &&
+                  Object.keys(registro).length > 0 &&
+                  registro.nickname !== null
+                }
                 onInput={(e) =>
                   (e.target.value = e.target.value
                     .toUpperCase()

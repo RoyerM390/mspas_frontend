@@ -394,11 +394,7 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Descripcion'}
-              name={'descripcion'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Descripcion'} name={'descripcion'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>

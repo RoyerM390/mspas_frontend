@@ -128,11 +128,7 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Centro comunitario'}
-              name={'centro_de_salud_id'}
-              rules={[{ required: true, message: 'Campo obligatorio' }]}
-            >
+            <Form.Item label={'Centro comunitario'} name={'centro_de_salud_id'}>
               <Select
                 options={map(centrosDeSalud, (value, key) => {
                   return {
@@ -148,11 +144,7 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Comunidad'}
-              name={'sector_id'}
-              rules={[{ required: true, message: 'Campo obligatorio' }]}
-            >
+            <Form.Item label={'Comunidad'} name={'sector_id'}>
               <AppSelect
                 menus={sectores}
                 label={'nombre'}
