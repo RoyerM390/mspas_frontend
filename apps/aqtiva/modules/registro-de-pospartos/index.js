@@ -124,9 +124,13 @@ const RegistroDePosPartos = () => {
         open={modalRegistro}
         onOk={async () => {
           await get();
+          setRegistro(null);
           setModalRegistro(false);
         }}
-        onCancel={() => setModalRegistro(false)}
+        onCancel={() => {
+          setRegistro(null);
+          setModalRegistro(false);
+        }}
         registro={registro}
       />
       <ModalVerDatos

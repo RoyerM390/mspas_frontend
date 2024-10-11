@@ -65,13 +65,11 @@ const ConsultasGenerales = () => {
           },
           {
             title: 'Centro de salud',
-            dataIndex: 'centros_de_salud',
-            render: ({ nombre }) => nombre,
+            render: (item) => item?.centros_de_salud?.nombre,
           },
           {
             title: 'Sector',
-            dataIndex: 'sectores',
-            render: ({ nombre }) => nombre,
+            render: (item) => item?.sectores?.nombre,
           },
           {
             title: 'Ver detalles',

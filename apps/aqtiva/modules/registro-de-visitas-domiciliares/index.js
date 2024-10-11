@@ -116,7 +116,7 @@ const RegistroDeVisitasDomiciliares = () => {
             render: (visitas) =>
               visitas?.map((visita, i) => (
                 <Tag color={'blue'} key={i}>
-                  {visita.usuarios.nickname}
+                  {visita.usuarios.nombres} {visita.usuarios.apellidos}
                 </Tag>
               )),
           },
