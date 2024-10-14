@@ -21,7 +21,9 @@ const ModalRegistrarUsuario = ({ open, onOk, onCancel, registro }) => {
       onOk={async () => {
         try {
           const values = await form.validateFields();
+          console.log('esto es aca...', values);
           if (registro && Object.keys(registro).length > 0) {
+            console.log('entra en editar');
             await genericPost(`usuarios/editar-usuario/${registro.id}`, values);
           } else {
             await genericPost('auth/create', values);

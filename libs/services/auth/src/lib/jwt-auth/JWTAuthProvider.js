@@ -91,7 +91,9 @@ const JWTAuthAuthProvider = ({
         isLoading: false,
       });
       fetchError(
-        error?.response?.data?.error || 'Usuario o contraseña incorrectos'
+        error?.response?.data?.message ||
+          error?.response?.data?.error ||
+          'Usuario o contraseña incorrectos'
       );
     }
   };

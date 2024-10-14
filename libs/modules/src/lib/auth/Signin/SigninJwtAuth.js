@@ -44,7 +44,14 @@ const SignInJwtAuth = () => {
             className="form-field"
             rules={[{ required: true, message: 'Debe ingresar su usuario' }]}
           >
-            <Input placeholder="usuario" />
+            <Input
+              placeholder="usuario"
+              onInput={(e) =>
+                (e.target.value = e.target.value
+                  .toUpperCase()
+                  .replace(/\s/g, ''))
+              }
+            />
           </Form.Item>
 
           <Form.Item
