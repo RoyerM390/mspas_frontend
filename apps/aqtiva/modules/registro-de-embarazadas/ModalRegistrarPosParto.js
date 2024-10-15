@@ -34,12 +34,12 @@ const ModalRegistrarPosParto = ({
           const values = await form.validateFields();
           if (posparto && Object.keys(posparto).length > 0) {
             await genericPost(
-              `embarazadas/registrar-posparto/${embarazada?.id}`,
+              `embarazadas/editar-posparto/${posparto?.id}`,
               values
             );
           } else {
             await genericPost(
-              `embarazadas/editar-posparto/${posparto?.id}`,
+              `embarazadas/registrar-posparto/${embarazada?.id}`,
               values
             );
           }
