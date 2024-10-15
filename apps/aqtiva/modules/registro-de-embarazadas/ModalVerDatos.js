@@ -89,11 +89,11 @@ const ModalVerDatos = ({ onOk, onCancel, open, embarazada }) => {
       children: embarazada?.ab,
     },
     {
-      label: 'Centro de salud',
+      label: 'Centro comunitario',
       children: embarazada?.centros_de_salud?.nombre,
     },
     {
-      label: 'Sector',
+      label: 'Comunidad',
       children: embarazada?.sectores?.nombre,
     },
     {

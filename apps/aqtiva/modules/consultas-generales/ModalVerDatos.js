@@ -17,11 +17,11 @@ const ModalVerDatos = ({ open, onOk, onCancel, registro }) => {
       children: getFormattedDate(registro?.fecha_nacimiento),
     },
     {
-      label: 'Centro de salud',
+      label: 'Centro comunitario',
       children: registro?.centros_de_salud?.nombre,
     },
     {
-      label: 'Sector',
+      label: 'Comunidad',
       children: registro?.sectores?.nombre,
     },
     {

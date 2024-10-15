@@ -130,6 +130,7 @@ const ModalRegistrarConsulta = ({ open, onOk, onCancel, registro }) => {
           <Col xs={8}>
             <Form.Item label={'Centro comunitario'} name={'centro_de_salud_id'}>
               <Select
+                allowClear={true}
                 options={map(centrosDeSalud, (value, key) => {
                   return {
                     label: <span>{key}</span>,

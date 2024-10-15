@@ -79,11 +79,11 @@ const ConsultasGenerales = () => {
             render: ({ nickname }) => nickname,
           },
           {
-            title: 'Centro de salud',
+            title: 'Centro comunitario',
             render: (item) => item?.centros_de_salud?.nombre,
           },
           {
-            title: 'Sector',
+            title: 'Comunidad',
             render: (item) => item?.sectores?.nombre,
           },
           {
