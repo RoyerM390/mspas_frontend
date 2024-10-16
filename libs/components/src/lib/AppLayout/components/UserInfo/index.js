@@ -42,7 +42,14 @@ const UserInfo = ({ hasColor }) => {
     },
     {
       key: 2,
-      label: <div onClick={() => logout()}>Salir</div>,
+      label: <div>Salir</div>,
+      onClick: () => {
+        logout();
+        // console.log('click aqui');
+        // localStorage.removeItem('token');
+        // // router.push('/');
+        // window.location.reload();
+      },
     },
   ];
 

@@ -32,7 +32,7 @@ const withData = (ComposedComponent) => (props) => {
   }, [isOnline]);
 
   useEffect(() => {
-    getPaths(user.routes || []);
+    getPaths(user?.routes || []);
   }, []);
 
   useEffect(() => {
