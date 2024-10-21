@@ -4,7 +4,7 @@ import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import { api } from '@aqtiva/helpers/api';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-
+const format = 'DD/MM/YYYY';
 const ModalRegistrarUltraSonido = ({
   open,
   onOk,
@@ -18,7 +18,10 @@ const ModalRegistrarUltraSonido = ({
   const { genericPost } = api('', dispatch);
   useEffect(() => {
     if (ultrasonido && Object.keys(ultrasonido).length > 0) {
-      form.setFieldsValue({ ...ultrasonido, fecha: dayjs(ultrasonido.fecha) });
+      form.setFieldsValue({
+        ...ultrasonido,
+        fecha: ultrasonido.fecha ? dayjs(ultrasonido.fecha).utc(false) : null,
+      });
     }
   }, [ultrasonido]);
 
@@ -52,98 +55,58 @@ const ModalRegistrarUltraSonido = ({
       <Form form={form} layout={'vertical'}>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'Lugar'}
-              name={'lugar'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Lugar'} name={'lugar'}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Fecha'}
-              name={'fecha'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
-              <DatePicker />
+            <Form.Item label={'Fecha'} name={'fecha'}>
+              <DatePicker format={format} />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'BA'}
-              name={'ba'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'BA'} name={'ba'}>
               <Input />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'Peso'}
-              name={'peso'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Peso'} name={'peso'}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Placenta'}
-              name={'placenta'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Placenta'} name={'placenta'}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'FCF'}
-              name={'fcf'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'FCF'} name={'fcf'}>
               <Input />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'Pre fetal'}
-              name={'pre_fetal'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Pre fetal'} name={'pre_fetal'}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Edad gestacion'}
-              name={'edad_gestacion'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Edad gestacion'} name={'edad_gestacion'}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'FPP'}
-              name={'fpp'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'FPP'} name={'fpp'}>
               <Input />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'PBF'}
-              name={'pbf'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'PBF'} name={'pbf'}>
               <Input />
             </Form.Item>
           </Col>
