@@ -14,6 +14,8 @@ import { api } from '@aqtiva/helpers/api';
 const dateFormat = 'DD/MM/YYYY';
 import AppRowContainer from '@aqtiva/components/AppRowContainer';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 const ModalRegistrarCitaPrenatal = ({
   open,
@@ -31,7 +33,9 @@ const ModalRegistrarCitaPrenatal = ({
     if (cita && Object.keys(cita).length > 0) {
       form.setFieldsValue({
         ...cita,
-        fecha_proxima_cita: dayjs(cita.fecha_proxima_cita),
+        fecha_proxima_cita: cita.fecha_proxima_cita
+          ? dayjs(cita.fecha_proxima_cita)
+          : null,
       });
     }
   }, [cita]);
@@ -47,10 +51,17 @@ const ModalRegistrarCitaPrenatal = ({
       onOk={async () => {
         try {
           const values = await form.validateFields();
-          const fecha = values.fecha_proxima_cita
-            .utc(true)
-            .startOf('date')
-            .toISOString();
+          console.log(values);
+          console.log(typeof values.fecha_proxima_cita);
+          console.log(dayjs.isDayjs(values.fecha_proxima_cita));
+          const fecha =
+            values.fecha_proxima_cita &&
+            dayjs(values.fecha_proxima_cita).isValid()
+              ? dayjs(values?.fecha_proxima_cita)
+                  ?.utc(true)
+                  ?.startOf('date')
+                  ?.toISOString()
+              : undefined;
           if (cita && Object.keys(cita).length > 0) {
             await genericPost(`citas-prenatales/editar/${cita?.id}`, {
               ...values,
@@ -77,75 +88,46 @@ const ModalRegistrarCitaPrenatal = ({
       <Form form={form} layout={'vertical'}>
         <AppRowContainer>
           <Col xs={24}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'riesgos_detectados'}
-              label={'Riesgos detectados'}
-            >
+            <Form.Item name={'riesgos_detectados'} label={'Riesgos detectados'}>
               <Input.TextArea />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'control'}
-              label={'Num. de control'}
-            >
+            <Form.Item name={'control'} label={'Num. de control'}>
               <InputNumber autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'meses'}
-              label={'Meses'}
-            >
+            <Form.Item name={'meses'} label={'Meses'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'peso'}
-              label={'Peso'}
-            >
+            <Form.Item name={'peso'} label={'Peso'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'presion_arterial'}
-              label={'Presion arterial'}
-            >
+            <Form.Item name={'presion_arterial'} label={'Presion arterial'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'altura_uterina'}
-              label={'Altura uterina'}
-            >
+            <Form.Item name={'altura_uterina'} label={'Altura uterina'}>
+              <Input autoComplete={'off'} />
+            </Form.Item>
+          </Col>
+          <Col xs={6}>
+            <Form.Item name={'foco_fetal'} label={'Foco fetal'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
             <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'foco_fetal'}
-              label={'Foco fetal'}
-            >
-              <Input autoComplete={'off'} />
-            </Form.Item>
-          </Col>
-          <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
               name={'acido_folico_sulfato_ferroso'}
               label={'Acido Folico / Sulfato ferroso'}
             >
@@ -153,58 +135,34 @@ const ModalRegistrarCitaPrenatal = ({
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'laboratorios'}
-              label={'Laboratorios'}
-            >
+            <Form.Item name={'laboratorios'} label={'Laboratorios'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'tdap'}
-              label={'TDAP'}
-            >
+            <Form.Item name={'tdap'} label={'TDAP'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'influenza'}
-              label={'Influenza'}
-            >
+            <Form.Item name={'influenza'} label={'Influenza'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'covid'}
-              label={'COVID'}
-            >
+            <Form.Item name={'covid'} label={'COVID'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'medicamentos'}
-              label={'Medicamentos'}
-            >
+            <Form.Item name={'medicamentos'} label={'Medicamentos'}>
               <Input autoComplete={'off'} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              rules={[{ required: true, message: 'Campo requerido' }]}
-              name={'fecha_proxima_cita'}
-              label={'Proxima cita'}
-            >
+            <Form.Item name={'fecha_proxima_cita'} label={'Proxima cita'}>
               <DatePicker />
             </Form.Item>
           </Col>

@@ -17,7 +17,18 @@ import { cuiValido } from 'validador-dpi-nit';
 import dayjs from 'dayjs';
 import AppSelect from '@aqtiva/components/AppSelect';
 import { map } from 'lodash';
-
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import weekYear from 'dayjs/plugin/weekYear';
+dayjs.extend(customParseFormat);
+dayjs.extend(advancedFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 const format = 'DD/MM/YYYY';
 const ModalRegistrarMujeresEmbarazadas = ({
   open,
@@ -65,9 +76,15 @@ const ModalRegistrarMujeresEmbarazadas = ({
           (me) => me.enfermedades_id
         ),
         pueblo: registro.pueblo_id,
-        fecha_nacimiento: dayjs(registro.fecha_nacimiento),
-        fecha_parto: dayjs(registro.fecha_parto),
-        fecha_ultima_regla: dayjs(registro.fecha_parto),
+        fecha_nacimiento: registro.fecha_nacimiento
+          ? dayjs(registro.fecha_nacimiento).utc(false)
+          : null,
+        fecha_parto: registro.fecha_parto
+          ? dayjs(registro.fecha_parto).utc(false)
+          : null,
+        fecha_ultima_regla: registro.fecha_ultima_regla
+          ? dayjs(registro.fecha_parto).utc(false)
+          : null,
       });
       if (registro.encargado_embarazada) {
         form.setFieldsValue({
@@ -311,78 +328,46 @@ const ModalRegistrarMujeresEmbarazadas = ({
         <Divider>Embarazo</Divider>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              label={'Fecha ultima regla'}
-              name={'fecha_ultima_regla'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
-              <DatePicker style={{ fontSize: '20px' }} />
+            <Form.Item label={'Fecha ultima regla'} name={'fecha_ultima_regla'}>
+              <DatePicker style={{ fontSize: '20px' }} format={format} />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Gestas'}
-              name={'gestas'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Gestas'} name={'gestas'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
           <Col xs={8}>
-            <Form.Item
-              label={'Cesarea'}
-              name={'cesarea'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Cesarea'} name={'cesarea'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              label={'HM'}
-              name={'hm'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'HM'} name={'hm'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'HV'}
-              name={'hv'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'HV'} name={'hv'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'AB'}
-              name={'ab'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'AB'} name={'ab'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'PES'}
-              name={'pes'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'PES'} name={'pes'}>
               <Input style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={8}>
-            <Form.Item
-              name="fecha_parto"
-              label="Fecha de parto prevista"
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item name="fecha_parto" label="Fecha de parto prevista">
               <DatePicker format={format} style={{ fontSize: '20px' }} />
             </Form.Item>
           </Col>

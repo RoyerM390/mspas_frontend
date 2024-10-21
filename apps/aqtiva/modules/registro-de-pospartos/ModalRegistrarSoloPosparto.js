@@ -292,58 +292,34 @@ const ModalRegistrarPosparto = ({ onOk, onCancel, open, registro }) => {
         <Divider>Embarazo</Divider>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              label={'Cesarea'}
-              name={'cesarea'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'Cesarea'} name={'cesarea'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'HM'}
-              name={'hm'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'HM'} name={'hm'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'HV'}
-              name={'hv'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'HV'} name={'hv'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'AB'}
-              name={'ab'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'AB'} name={'ab'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
         </AppRowContainer>
         <AppRowContainer>
           <Col xs={6}>
-            <Form.Item
-              label={'PES'}
-              name={'pes'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'PES'} name={'pes'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
           <Col xs={6}>
-            <Form.Item
-              label={'GESTAS'}
-              name={'gestas'}
-              rules={[{ required: true, message: 'Campo requerido' }]}
-            >
+            <Form.Item label={'GESTAS'} name={'gestas'}>
               <Input style={{ fontSize: '15px' }} />
             </Form.Item>
           </Col>
